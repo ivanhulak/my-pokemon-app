@@ -1,0 +1,121 @@
+.header__search {
+  background: var(--white);
+  height: 45px;
+  border-radius: 24px;
+  padding: 2px 2px 2px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  &-input {
+    flex: 1 1 100%;
+    font-size: 18px;
+    color: var(--grey);
+  }
+  &-loupe {
+    svg {
+      width: 26px;
+      height: 26px;
+      fill: #595f65;
+    }
+  }
+  &-clear {
+    cursor: pointer;
+    svg {
+      width: 26px;
+      height: 26px;
+    }
+  }
+  &-box {
+    flex: 1 1 100%;
+  }
+  &-inner-box {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  &-btn {
+    background-color: var(--grey);
+    padding: 5px 20px;
+    width: 100px;
+    height: 100%;
+    border-radius: 24px;
+    color: var(--white);
+    font-size: 22px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    position: relative;
+    &:hover {
+      background: #000;
+    }
+    &:disabled{
+      cursor: not-allowed;
+    }
+  }
+}
+
+.btn-pokeball {
+  position: absolute;
+  left: -3px;
+  top: 0;
+  width: 41px;
+  height: 41px;
+  transform: translateX(-100%);
+  visibility: hidden;
+  &.active {
+    visibility: visible;
+    animation: spin 1000ms linear infinite, moveLeftToRight 2s linear;
+  }
+}
+
+/* Spinning the sphere using key frames */
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+/* Move sphere from left to right */
+// @-moz-keyframes moveLeftToRight {
+//   0% {
+//     left: 0px
+//   }
+//   100% {
+//     left: 100%;
+//   }
+// }
+@keyframes moveLeftToRight {
+  0% {
+    left: 0px;
+  }
+  100% {
+    left: 56px;
+  }
+}
+// @-webkit-keyframes moveLeftToRight {
+//   0% {
+//     left: -100px;
+//   }
+//   100% {
+//     left: 100%;
+//   }
+// }
