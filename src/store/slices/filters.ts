@@ -4,12 +4,14 @@ interface FiltersSlice {
    offsetPage: number;
    limit: number;
    search: string;
+   portionSize: number;
 }
 
 const initialState: FiltersSlice = { 
    offsetPage: 0,
    limit: 10,
-   search: ''
+   search: '',
+   portionSize: 10
 }
 
 const filtersSlice = createSlice({
