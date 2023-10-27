@@ -1,11 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { PokemonType } from "../../@types/pokemons/common";
-import { PokemonInfoType } from "../../components/Pokemons/Pokemon";
-import {
-  FetchPokemonsParamsType,
-  FetchPokemonsType,
-} from "../../components/Pokemons/PokemonsBlock";
+import { PokemonInfoType, PokemonType } from "../../@types/pokemons/common";
+import { FetchPokemonsParamsType, FetchPokemonsType } from "../../@types/pokemons/fetchTypes";
 
 export enum StatusEnum {
   LOADING = "loading",
@@ -34,7 +30,7 @@ const initialState: PokemonsSlice = {
 
 const fetchPokemonsInfoFunc = async (url: string) => {
   const { data } = await axios.get(`${url}`);
-  const { id, name, stats, weight, types } = data;
+  const { id, name, stats, weight, types, height } = data;
   const obj: PokemonInfoType = {
     id,
     url,
@@ -42,7 +38,10 @@ const fetchPokemonsInfoFunc = async (url: string) => {
     types,
     stats,
     weight,
+    height,
     image: data.sprites.other.dream_world.front_default,
+    image_reserve: data.sprites.other.home.front_default,
+
   };
   return obj;
 };
@@ -71,7 +70,6 @@ export const fetchPokemons = createAsyncThunk(
   }
 );
 
-
 const pokemonsSlice = createSlice({
   name: "pokemons",
   initialState,
@@ -93,13 +91,6 @@ const pokemonsSlice = createSlice({
     builder.addCase(fetchPokemons.fulfilled, (state, action) => {
       state.pokemonsInfoList = action.payload.info;
       state.count = action.payload.count;
-      // const pagesCount = Math.ceil(state.count / 10);
-      // state.portionsCount = Math.ceil(pagesCount / state.portionSize);
-      // const allPages = []
-      // for (let i = 1; i <= pagesCount; i++) {
-      //   allPages.push(i)
-      // }
-      // state.pages = allPages;
       state.status = StatusEnum.SUCCESS;
     });
     builder.addCase(fetchPokemons.rejected, (state, action) => {

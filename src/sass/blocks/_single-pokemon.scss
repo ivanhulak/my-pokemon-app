@@ -4,6 +4,7 @@
       padding: 50px;
       border-radius: 24px;
       box-shadow: 0px 6px 12px 0px rgb(53, 109, 214, 0.7);
+      margin-bottom: 30px;
    }
 }
 
@@ -29,13 +30,14 @@
       font-size: 24px;
    }
    &__types-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
       align-items: center;
+      justify-content: flex-end;
       column-gap: 10px;
       row-gap: 15px;
       flex-wrap: wrap;
       li {
+         flex: 0 0 30%;
         background: var(--main-blue);
         padding: 10px;
         color: var(--white);
@@ -83,14 +85,102 @@
       height: 15px;
       background: var(--grey);
       position: relative;
+      &-max{
+         position: absolute;
+         left: 0;
+         top: 0;
+         height: 100%;
+         width: 100%;
+         border-radius: 20px;
+      }
       &-indicator{
          position: absolute;
          left: 0;
          top: 0;
          height: 100%;
-         width: 33%;
-         background: red;
          border-radius: 20px;
+         z-index: 2;
       }
+   }
+}
+.block-title{
+   font-size: 36px;
+   color: var(--grey);
+   font-weight: 700;
+}
+
+.block-breeding{
+   &__title{
+      margin-bottom: 20px;
+   }
+   &__info{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+   }
+   &__values{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      background: var(--light-grey);
+      border: 2px solid var(--grey);
+      border-radius: 14px;
+      padding: 15px;
+      height: 70px;
+   }
+   &__name{
+      text-align: center;
+      color: var(--grey);
+      font-size: 30px;
+      margin-bottom: 10px;
+   }
+   &__value{
+      font-size: 22px;
+      color: var(--grey);
+      font-weight: 500;
+   }
+}
+
+.block-moves{
+   &__top{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 50px;
+   }
+   &__seeAll{
+      background: var(--black);
+      color: var(--white);
+      font-size: 22px;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border-radius: 24px;
+      width: 130px;
+   }
+   &__moves{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+   }
+}
+
+.moves-block{
+   &__item{
+      padding: 20px;
+      background: red;
+      border-radius: 16px;
+      &-inner{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         gap: 10px;
+      }
+   }
+   &__name{
+      color: var(--light-grey);
+      font-weight: 500;
+      font-size: 24px;
    }
 }

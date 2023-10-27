@@ -1,25 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { PokemonType } from "../../@types/pokemons/common";
+import { PokemonInfoType } from "../../@types/pokemons/common";
+import { FetchPokemonsParamsType } from "../../@types/pokemons/fetchTypes";
 import { setCurrentPage } from "../../store/slices/filters";
 import { StatusEnum, fetchPokemons, setPages } from "../../store/slices/pokemons";
 import { useAppDispatch } from "../../store/store";
 import { Error } from "../Error";
 import { Pagination } from "../Pagination";
 import { LoadingPokemon } from "./LoadingPokemon";
-import { Pokemon, PokemonInfoType } from "./Pokemon";
-
-export type FetchPokemonsType = {
-  count: number;
-  results: PokemonType[];
-  next: string | null;
-  prev: string | null;
-};
-
-export type FetchPokemonsParamsType = {
-  offset: number;
-  limit: number;
-};
+import { Pokemon } from "./Pokemon";
 
 export const PokemonsBlock: React.FC = () => {
   const [portionNumber, setPortionNumber] = React.useState(1)
@@ -53,7 +42,6 @@ export const PokemonsBlock: React.FC = () => {
   }, [offsetPage]);
 
   React.useEffect(() => {
-    console.log('dispatch')
     dispatch(setPages())
   }, [count])
 
