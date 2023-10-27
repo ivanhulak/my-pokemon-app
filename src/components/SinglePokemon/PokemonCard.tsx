@@ -63,7 +63,7 @@ export const PokemonCard: React.FC<PokemonInfoType> = ({
                     <div
                       className="stats-block__scale-indicator"
                       style={{
-                        width: `${item.base_stat}%`,
+                        width: `${item.base_stat < 100 ? item.base_stat : 100}%`,
                         background: `${findColor(
                           allStats,
                           item.stat.name,

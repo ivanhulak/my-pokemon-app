@@ -1,5 +1,6 @@
 import React from "react";
 import pickachu from "../assets/img/not-found-pikachu.png";
+import { CommonBtn } from "./common/CommonBtn";
 
 export const Error: React.FC<{ error: string, callback: () => void }> = ({ error, callback }) => {
   const onClickTryAgain = () => {
@@ -12,9 +13,9 @@ export const Error: React.FC<{ error: string, callback: () => void }> = ({ error
           <h2 className="error__title">Oops, some error happened</h2>
           <p className="error__message">{error}</p>
           <img src={pickachu} alt="not found pickachu" />
-          <div className="error__btn" onClick={onClickTryAgain}>
+          <CommonBtn className="error__btn" onClick={onClickTryAgain}>
             Try Again
-          </div>
+          </CommonBtn>
         </div>
       </div>
     </div>

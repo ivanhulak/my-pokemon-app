@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { PokemonInfoType, PokemonType } from "../../@types/pokemons/common";
-import { FetchPokemonsParamsType, FetchPokemonsType } from "../../@types/pokemons/fetchTypes";
+import { AnotherPokemonType, ListPokemonType, PokemonInfoType, PokemonType } from "../../@types/pokemons/common";
+import {
+  FetchPokemonsByTypeParamsType,
+  FetchPokemonsParamsType,
+  FetchPokemonsType,
+} from "../../@types/pokemons/fetchTypes";
+import { AllTypesType } from "../../utils/some_data/allTypes";
 
 export enum StatusEnum {
   LOADING = "loading",
@@ -25,7 +30,7 @@ const initialState: PokemonsSlice = {
   portionsCount: 0,
   status: StatusEnum.LOADING,
   pokemonsInfoList: [],
-  errorMessage: undefined
+  errorMessage: undefined,
 };
 
 const fetchPokemonsInfoFunc = async (url: string) => {
@@ -41,7 +46,6 @@ const fetchPokemonsInfoFunc = async (url: string) => {
     height,
     image: data.sprites.other.dream_world.front_default,
     image_reserve: data.sprites.other.home.front_default,
-
   };
   return obj;
 };
@@ -70,6 +74,45 @@ export const fetchPokemons = createAsyncThunk(
   }
 );
 
+
+export const fetchPokemonsByType = createAsyncThunk(
+  "pokemons/fetchPokemonsByType",
+  async ({ url, selectedType }: FetchPokemonsByTypeParamsType) => {
+    const { data } = await axios.get(url);
+    if (data?.pokemon) {
+      const listPokemons = data.pokemon.map((p: AnotherPokemonType) =>
+        addPokemonToList(p.pokemon, selectedType)
+      );
+      return listPokemons;
+    }
+    if (data?.results) {
+      const promises = data.results.map((item: PokemonType) =>
+        fetchPokemonsInfoFunc(item.url)
+      );
+      const info = await Promise.all(promises);
+      return info;
+    }
+  }
+);
+
+const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {
+  const pokemonId = parseInt(
+    addedPokemon.url
+      .replace("https://pokeapi.co/api/v2/pokemon/", "")
+      .replace("/", "") // 'id'
+  );
+  const listPokemon: ListPokemonType = {
+    name: addedPokemon.name,
+    url: addedPokemon.url,
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`,
+    image_reserve: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`,
+    id: pokemonId,
+    types: [{ slot: 1, type: selectedType }],
+  };
+
+  return listPokemon;
+};
+
 const pokemonsSlice = createSlice({
   name: "pokemons",
   initialState,
@@ -77,12 +120,12 @@ const pokemonsSlice = createSlice({
     setPages: (state) => {
       const pagesCount = Math.ceil(state.count / 10);
       state.portionsCount = Math.ceil(pagesCount / state.portionSize);
-      const allPages = []
+      const allPages = [];
       for (let i = 1; i <= pagesCount; i++) {
-        allPages.push(i)
+        allPages.push(i);
       }
       state.pages = allPages;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPokemons.pending, (state) => {
@@ -94,11 +137,22 @@ const pokemonsSlice = createSlice({
       state.status = StatusEnum.SUCCESS;
     });
     builder.addCase(fetchPokemons.rejected, (state, action) => {
-      state.errorMessage = action.error.message
+      state.errorMessage = action.error.message;
+      state.status = StatusEnum.ERROR;
+    });
+    builder.addCase(fetchPokemonsByType.pending, (state) => {
+      state.status = StatusEnum.LOADING;
+    });
+    builder.addCase(fetchPokemonsByType.fulfilled, (state, action) => {
+      state.pokemonsInfoList = action.payload;
+      state.status = StatusEnum.SUCCESS;
+    });
+    builder.addCase(fetchPokemonsByType.rejected, (state, action) => {
+      state.errorMessage = action.error.message;
       state.status = StatusEnum.ERROR;
     });
   },
 });
 
-export const { setPages } = pokemonsSlice.actions
+export const { setPages } = pokemonsSlice.actions;
 export default pokemonsSlice.reducer;

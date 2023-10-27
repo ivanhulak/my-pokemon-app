@@ -1,4 +1,5 @@
-.error {
+.error,
+.noPokemons {
   &__body {
     display: flex;
     flex-direction: column;

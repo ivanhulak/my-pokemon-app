@@ -7,6 +7,7 @@ import { PokemonCard } from "../components/SinglePokemon/PokemonCard";
 import { PokemonMoves } from "../components/SinglePokemon/PokemonMoves";
 
 export const SinglePokemonPage: React.FC = () => {
+  window.scroll({behavior: "smooth", top: 0})
   const { pokemonsInfoList } = useSelector((state: any) => state.pokemons);
   const params = useParams();
 

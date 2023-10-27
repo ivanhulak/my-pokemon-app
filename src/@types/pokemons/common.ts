@@ -11,7 +11,10 @@ export type PokemonTypesType = {
   slot: number;
   type: { name: string; url: string };
 };
-
+export type AnotherPokemonType = {
+  pokemon: PokemonType;
+  slot: number;
+}
 export type PokemonInfoType = {
   id: number;
   url: string;
@@ -23,3 +26,17 @@ export type PokemonInfoType = {
   image: string;
   image_reserve: string;
 };
+
+// Needs to be fixed
+export type ListPokemonType = {
+  id: number;
+  url: string;
+  name: string;
+  types: PokemonTypesType[];
+  image: string;
+  image_reserve: string;
+  // !!!!!!! needs to be here also !!!!!!!!
+  // stats: PokemonStatItem[];
+  // weight: number;
+  // height: number;
+}

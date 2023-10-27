@@ -14,6 +14,10 @@
     flex-direction: column;
     align-self: center;
     gap: 20px;
+    height: 100%;
+    a{
+      flex: 1 1 auto;
+    }
   }
 }
 .inner-pokemon {
