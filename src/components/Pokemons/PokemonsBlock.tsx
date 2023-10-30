@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { StatusEnum } from "../../@types/enums/StatusEnum";
 import { PokemonInfoType } from "../../@types/pokemons/common";
-import { StatusEnum } from "../../store/slices/pokemons";
 import { Error } from "../Error";
 import { NoPokemonsFound } from "../NoPokemonsFound";
 import { LoadingPokemon } from "./LoadingPokemon";
@@ -25,7 +25,9 @@ export const PokemonsBlock: React.FC<PokemonsBlockProps> = ({ fetchDataFunc }) =
         <Error error={errorMessage} callback={fetchDataFunc} />
       ) : (
         <div className="container">
-          {status === StatusEnum.SUCCESS && !pokemonItems.length && <NoPokemonsFound callback={fetchDataFunc}/>}
+          {status === StatusEnum.SUCCESS 
+          && !pokemonItems.length 
+          && <NoPokemonsFound callback={fetchDataFunc}/>}
           <div className="pokemons__box box-pokemons">
             {status === StatusEnum.LOADING ? skeleton : pokemonItems}
           </div>

@@ -8,6 +8,7 @@ import no_pokemon from "../../assets/img/no-pokemon.png";
 import { findColor } from "../../utils/findColor";
 import { allStats } from "../../utils/some_data/allStats";
 import { allTypes } from "../../utils/some_data/allTypes";
+import { PokeballLoader } from "../PokeballLoader";
 import { PokemonID } from "../PokemonID";
 
 export const PokemonCard: React.FC<PokemonInfoType> = ({
@@ -18,6 +19,7 @@ export const PokemonCard: React.FC<PokemonInfoType> = ({
   image,
   image_reserve,
 }) => {
+  console.log(types);
 
   return (
     <div className="singlePokemon__block block-single">
@@ -28,24 +30,23 @@ export const PokemonCard: React.FC<PokemonInfoType> = ({
         </div>
         <div className="block-single__types">
           <ul className="block-single__types-list">
-            {types.length &&
+            {!types ? <PokeballLoader /> :
               types.map((t: PokemonTypesType) => (
                 <li
                   key={t.type.name}
-                  style={{
-                    background: `${findColor(allTypes, t.type.name, "color")}`,
-                  }}
+                  style={{ background: `${findColor(allTypes, t.type.name, "color")}` }}
                 >
                   {t.type.name}
                 </li>
-              ))}
+              ))
+            }
           </ul>
         </div>
       </div>
       <div className="block-single__main">
         <div className="block-single__stats stats-block">
           <div className="stats-block__inner">
-            {stats.length &&
+            {!stats ? <PokeballLoader /> :
               stats.map((item: PokemonStatItem) => (
                 <div key={item.stat.url} className="stats-block__stat">
                   <div className="stats-block__property">{item.stat.name}</div>

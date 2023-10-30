@@ -1,5 +1,5 @@
 import { AllTypesType } from "../../utils/some_data/allTypes";
-import { PokemonType } from "./common";
+import { PokemonStatItem, PokemonType, PokemonTypesType } from "./common";
 
 export type FetchPokemonsType = {
   count: number;
@@ -16,4 +16,16 @@ export type FetchPokemonsParamsType = {
 export type FetchPokemonsByTypeParamsType = {
   url: string;
   selectedType: AllTypesType
+}
+
+export type FetchPokemonInfo = {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  image: string;
+  image_reserve: string;
+  url: string;
+  types: PokemonTypesType[];
+  stats: PokemonStatItem[];
 }

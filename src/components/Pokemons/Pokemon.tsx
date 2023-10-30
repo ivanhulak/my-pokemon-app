@@ -5,6 +5,7 @@ import { PokemonID } from "../PokemonID";
 import { findColor } from "../../utils/findColor";
 import { PokemonInfoType, PokemonTypesType } from "../../@types/pokemons/common";
 import { allTypes } from "../../utils/some_data/allTypes";
+import axios from "axios";
 
 export const Pokemon: React.FC<PokemonInfoType> = ({
   id,
@@ -13,6 +14,7 @@ export const Pokemon: React.FC<PokemonInfoType> = ({
   image_reserve,
   types,
 }) => {
+
   return (
     <div className="box-pokemons__item">
       <div className="box-pokemons__item-inner inner-pokemon">
@@ -22,7 +24,7 @@ export const Pokemon: React.FC<PokemonInfoType> = ({
             <PokemonID id={id} className="inner-pokemon__id"/>
           </div>
           <div className="inner-pokemon__image">
-            <img src={image || image_reserve || no_pokemon} alt="pokemon" />
+            <img src={ image || image_reserve || no_pokemon} alt="pokemon" />
           </div>
         </Link>
         <ul className="inner-pokemon__types">

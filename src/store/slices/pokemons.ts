@@ -1,18 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AnotherPokemonType, ListPokemonType, PokemonInfoType, PokemonType } from "../../@types/pokemons/common";
+import { StatusEnum } from "../../@types/enums/StatusEnum";
+import { 
+  AnotherPokemonType, 
+  ListPokemonType, 
+  PokemonInfoType, 
+  PokemonType 
+} from "../../@types/pokemons/common";
 import {
   FetchPokemonsByTypeParamsType,
   FetchPokemonsParamsType,
   FetchPokemonsType,
 } from "../../@types/pokemons/fetchTypes";
 import { AllTypesType } from "../../utils/some_data/allTypes";
-
-export enum StatusEnum {
-  LOADING = "loading",
-  SUCCESS = "success",
-  ERROR = "error",
-}
 
 interface PokemonsSlice {
   count: number;
@@ -22,6 +22,7 @@ interface PokemonsSlice {
   pages: number[];
   portionSize: number;
   portionsCount: number;
+  singlePokemon: PokemonInfoType;
 }
 const initialState: PokemonsSlice = {
   count: 0,
@@ -31,8 +32,10 @@ const initialState: PokemonsSlice = {
   status: StatusEnum.LOADING,
   pokemonsInfoList: [],
   errorMessage: undefined,
+  singlePokemon: {} as PokemonInfoType,
 };
 
+// --------- Functions ---------
 const fetchPokemonsInfoFunc = async (url: string) => {
   const { data } = await axios.get(`${url}`);
   const { id, name, stats, weight, types, height } = data;
@@ -49,11 +52,36 @@ const fetchPokemonsInfoFunc = async (url: string) => {
   };
   return obj;
 };
+const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {
+  const pokemonId = parseInt(
+    addedPokemon.url
+      .replace("https://pokeapi.co/api/v2/pokemon/", "")
+      .replace("/", "")
+  );
+  const main_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`
+  const reserve_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`
 
-type ReturnObjType = {
-  count: number;
-  info: PokemonInfoType[];
+  const listPokemon: ListPokemonType = {
+    name: addedPokemon.name,
+    url: addedPokemon.url,
+    image: main_url,
+    image_reserve: reserve_url,
+    id: pokemonId,
+    types: [{ slot: 1, type: selectedType }],
+  };
+
+  return listPokemon;
 };
+
+// --------- Async Thunks ---------
+export const fetchSinglePokemon = createAsyncThunk(
+  "pokemons/fetchSinglePokemon",
+  async ({ id }: any ) => {
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`
+    const result = await fetchPokemonsInfoFunc(url)
+    return result
+  }
+);
 
 export const fetchPokemons = createAsyncThunk(
   "pokemons/fetchPokemons",
@@ -66,14 +94,13 @@ export const fetchPokemons = createAsyncThunk(
       fetchPokemonsInfoFunc(item.url)
     );
     const info = await Promise.all(promises);
-    const obj: ReturnObjType = {
+    const obj: { count: number, info: PokemonInfoType[] } = {
       count: data.count,
       info,
     };
-    return obj as ReturnObjType;
+    return obj;
   }
 );
-
 
 export const fetchPokemonsByType = createAsyncThunk(
   "pokemons/fetchPokemonsByType",
@@ -95,24 +122,6 @@ export const fetchPokemonsByType = createAsyncThunk(
   }
 );
 
-const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {
-  const pokemonId = parseInt(
-    addedPokemon.url
-      .replace("https://pokeapi.co/api/v2/pokemon/", "")
-      .replace("/", "") // 'id'
-  );
-  const listPokemon: ListPokemonType = {
-    name: addedPokemon.name,
-    url: addedPokemon.url,
-    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`,
-    image_reserve: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`,
-    id: pokemonId,
-    types: [{ slot: 1, type: selectedType }],
-  };
-
-  return listPokemon;
-};
-
 const pokemonsSlice = createSlice({
   name: "pokemons",
   initialState,
@@ -128,6 +137,7 @@ const pokemonsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // ------- fetchPokemons ------
     builder.addCase(fetchPokemons.pending, (state) => {
       state.status = StatusEnum.LOADING;
     });
@@ -140,6 +150,7 @@ const pokemonsSlice = createSlice({
       state.errorMessage = action.error.message;
       state.status = StatusEnum.ERROR;
     });
+    // ------- fetchPokemonsByType ------
     builder.addCase(fetchPokemonsByType.pending, (state) => {
       state.status = StatusEnum.LOADING;
     });
@@ -151,6 +162,19 @@ const pokemonsSlice = createSlice({
       state.errorMessage = action.error.message;
       state.status = StatusEnum.ERROR;
     });
+    // ------- fetchSinglePokemon ------
+    builder.addCase(fetchSinglePokemon.pending, (state) => {
+      state.status = StatusEnum.LOADING;
+    });
+    builder.addCase(fetchSinglePokemon.fulfilled, (state, action) => {
+      state.status = StatusEnum.SUCCESS;
+      state.singlePokemon = action.payload;
+    });
+    builder.addCase(fetchSinglePokemon.rejected, (state, action) => {
+      state.errorMessage = action.error.message;
+      state.status = StatusEnum.ERROR;
+    });
+    // ------- - ------
   },
 });
 

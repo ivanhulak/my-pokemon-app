@@ -17,7 +17,7 @@ export type AnotherPokemonType = {
 }
 export type PokemonInfoType = {
   id: number;
-  url: string;
+  url?: string;
   name: string;
   types: PokemonTypesType[];
   stats: PokemonStatItem[];
