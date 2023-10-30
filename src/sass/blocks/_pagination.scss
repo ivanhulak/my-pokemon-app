@@ -52,8 +52,12 @@
   text-align: center;
   &-text{
     font-size: 20px;
-    color: var(--main-blue);
+    background: var(--main-blue);
+    color: var(--white);
     font-weight: 500;
+    display: inline-block;
+    padding: 10px 40px;
+    border-radius: 18px;
   }
   select{
     appearance: none;
@@ -65,6 +69,6 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 2px solid var(--main-blue);
+    border: 2px solid var(--white);
   }
 }

@@ -4,16 +4,18 @@ import { StatusEnum } from "../@types/enums/StatusEnum";
 import {
   FetchPokemonsByTypeParamsType,
   FetchPokemonsParamsType,
+  FetchPokemonsType,
 } from "../@types/pokemons/fetchTypes";
 import { Pagination } from "../components/Pagination";
 import { PokemonsBlock } from "../components/Pokemons/PokemonsBlock";
 import { PokemonTypes } from "../components/PokemonTypes";
-import { setCurrentPage, setLimit } from "../store/slices/filters";
+import { setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
 import {
   fetchPokemons,
-  fetchPokemonsByType,
+  setPokemonsByName,
   setPages,
   setRecountAll,
+  fetchPokemonsByType,
 } from "../store/slices/pokemons";
 import { useAppDispatch } from "../store/store";
 import { AllTypesType } from "../utils/some_data/allTypes";
@@ -22,7 +24,7 @@ export const HomePage: React.FC = () => {
   const [portionNumber, setPortionNumber] = React.useState(1);
   const [selectedType, setSelectedType] = React.useState<AllTypesType | null>(null);
   const dispatch = useAppDispatch();
-  const { offsetPage, limit } = useSelector((state: any) => state.filters);
+  const { offsetPage, limit, search } = useSelector((state: any) => state.filters);
   const { count, status, pages, portionSize, portionsCount, pokemonsInfoList } =
     useSelector((state: any) => state.pokemons);
 
@@ -43,6 +45,7 @@ export const HomePage: React.FC = () => {
     };
     dispatch(fetchPokemons(params));
     setSelectedType(null)
+    dispatch(setSearch(null))
   };
   const fetchDataByTypeFunc = () => {
     if (selectedType) {
@@ -73,6 +76,12 @@ export const HomePage: React.FC = () => {
   React.useEffect(() => {
     dispatch(setCurrentPage({page: 0, limit}))
   }, [selectedType])
+  React.useEffect(() => {
+    if(search){
+      // dispatch(fetchPokemonsByName({offset: offsetPage, limit, search}))
+      dispatch(setPokemonsByName(search))
+    }
+  }, [search])
   
   return (
     <>

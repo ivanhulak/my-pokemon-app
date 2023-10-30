@@ -10,7 +10,7 @@ export const NoPokemonsFound: React.FC<{callback: () => void}> = ({callback}) =>
     <div className="noPokemons">
       <div className="container">
         <div className="noPokemons__body">
-          <h2 className="noPokemons__title">No one pokemons for this type found</h2>
+          <h2 className="noPokemons__title">No one pokemons found</h2>
           <img src={pickachu} alt="not found pickachu" />
           <CommonBtn className="noPokemons__btn" onClick={onClickSearchOther}>
             Search other

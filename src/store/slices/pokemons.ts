@@ -3,6 +3,7 @@ import axios from "axios";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
 import { AnotherPokemonType, PokemonInfoType, PokemonType } from "../../@types/pokemons/common";
 import {
+  FetchPokemonsByNameParamsType,
   FetchPokemonsByTypeParamsType,
   FetchPokemonsParamsType,
   FetchPokemonsType,
@@ -82,6 +83,26 @@ export const fetchPokemonsByType = createAsyncThunk(
     }
   }
 );
+// export const fetchPokemonsByName = createAsyncThunk("pokemons/fetchPokemonsByName",
+//   async({ offset, limit, search, pokemonsInfoList }: FetchPokemonsByNameParamsType) => {
+//     // const { data } = await axios.get<FetchPokemonsType>(
+//     //   'https://pokeapi.co/api/v2/pokemon/',
+//     //   { params: { offset, limit } }
+//     // );
+//     // const promises = data.results
+//     //   .filter((obj: PokemonType) => obj.name.includes(search))
+//     //   .map((item: PokemonType) =>
+//     //     fetchPokemonsInfoFunc(item.url)
+//     //   );
+//     // const info = await Promise.all(promises);
+//     // const obj: { count: number, info: PokemonInfoType[] } = {
+//     //   count: data.count,
+//     //   info,
+//     // };
+//     // return obj;
+//     // const result = pokemonsInfoList.filter((obj) => obj.name.includes(search))
+//   }
+// )
 
 const pokemonsSlice = createSlice({
   name: "pokemons",
@@ -96,7 +117,12 @@ const pokemonsSlice = createSlice({
       const result = recountAll(state.count, action.payload, state.portionSize)
       state.portionsCount = result.portionsCount
       state.pages = result.allPages;
-    }
+    },
+    setPokemonsByName: (state, action: PayloadAction<string>) => {
+      state.pokemonsInfoList = state.pokemonsInfoList.filter((obj: PokemonInfoType) => {
+        return obj.name.includes(action.payload)
+      })
+    },
   },
   extraReducers: (builder) => {
     // ------- fetchPokemons ------
@@ -140,8 +166,21 @@ const pokemonsSlice = createSlice({
       state.errorMessage = action.error.message;
       state.status = StatusEnum.ERROR;
     });
+    // ------- fetchPokemonsByName ------
+    // builder.addCase(fetchPokemonsByName.pending, (state) => {
+    //   state.status = StatusEnum.LOADING;
+    // });
+    // builder.addCase(fetchPokemonsByName.fulfilled, (state, action) => {
+    //   // state.pokemonsInfoList = action.payload.info;
+    //   // state.count = action.payload.count;
+    //   state.status = StatusEnum.SUCCESS;
+    // });
+    // builder.addCase(fetchPokemonsByName.rejected, (state, action) => {
+    //   state.errorMessage = action.error.message;
+    //   state.status = StatusEnum.ERROR;
+    // });
   },
 });
 
-export const { setPages, setRecountAll } = pokemonsSlice.actions;
+export const { setPages, setRecountAll, setPokemonsByName } = pokemonsSlice.actions;
 export default pokemonsSlice.reducer;

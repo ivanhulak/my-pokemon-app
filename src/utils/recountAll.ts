@@ -13,6 +13,5 @@ export type RecountAllResultType = {
      portionsCount,
      allPages,
    }
-   console.log('recountAllResultObj:', recountAllResultObj)
    return recountAllResultObj
  }

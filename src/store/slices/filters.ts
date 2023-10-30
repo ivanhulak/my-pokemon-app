@@ -3,14 +3,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface FiltersSlice {
    offsetPage: number;
    limit: number;
-   search: string;
+   search: string | null;
    portionSize: number;
 }
 
 const initialState: FiltersSlice = { 
    offsetPage: 0,
    limit: 10,
-   search: '',
+   search: null,
    portionSize: 10
 }
 
@@ -21,7 +21,7 @@ const filtersSlice = createSlice({
     setCurrentPage(state, action: PayloadAction<{page: number; limit: number;}>) {
       state.offsetPage = action.payload.page * action.payload.limit
     },
-    setSearch(state, action: PayloadAction<string>){
+    setSearch(state, action: PayloadAction<string | null>){
       state.search = action.payload
     },
     setLimit(state, action: PayloadAction<number>){

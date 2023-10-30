@@ -16,7 +16,7 @@ export const Search: React.FC = () => {
   const onHandleSearch = () => {
     inputRef.current?.blur()
     dispatch(setSearch(searchValue));
-    handleSearchClear()
+    setSearchValue('');
     setIsActive(true)
     setTimeout(() => {
       setIsActive(false)
