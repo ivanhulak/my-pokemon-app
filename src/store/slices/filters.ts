@@ -18,14 +18,15 @@ const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    setCurrentPage(state, action: PayloadAction<number>) {
-      state.offsetPage = action.payload * state.limit
+    setCurrentPage(state, action: PayloadAction<{page: number; limit: number;}>) {
+      state.offsetPage = action.payload.page * action.payload.limit
     },
     setSearch(state, action: PayloadAction<string>){
       state.search = action.payload
     },
     setLimit(state, action: PayloadAction<number>){
       state.limit = action.payload
+      state.offsetPage = 0
     },
   },
 })

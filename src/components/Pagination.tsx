@@ -27,10 +27,10 @@ export const Pagination: React.FC<PaginationProps> = ({
   const leftPortion = (portionNumber - 1) * portionSize + 1;
   const rightPortion = portionNumber * portionSize;
 
-  const handlePrevPage = () => {
+  const handlePrev = () => {
     setPortionNumber((prev: number) => prev - 1);
   };
-  const handleNextPage = () => {
+  const handleNext = () => {
     setPortionNumber((prev: number) => prev + 1);
   };
 
@@ -40,7 +40,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         <div className="pagination__body">
           <button
             className="pagination__btn pagination__btn--prev"
-            onClick={handlePrevPage}
+            onClick={handlePrev}
             disabled={portionNumber === 1}
           >
             <svg viewBox="0 0 32 32" transform="rotate(180)">
@@ -54,15 +54,13 @@ export const Pagination: React.FC<PaginationProps> = ({
                 <li
                   key={p}
                   onClick={() => handleChangePage(p - 1)}
-                  className={cn({ active: (p - 1) * 10 === offsetPage })}
-                >
-                  {p}
-                </li>
+                  className={cn({ active: (p - 1) * limit === offsetPage })}
+                >{p}</li>
               ))}
           </ul>
           <button
             className="pagination__btn pagination__btn--next"
-            onClick={handleNextPage}
+            onClick={handleNext}
             disabled={portionsCount === portionNumber}
           >
             <svg viewBox="0 0 32 32">

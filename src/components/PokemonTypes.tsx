@@ -22,7 +22,10 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = ({ selectedType, setSel
               {t.name}
             </li>
           ))}
-          <li className="types__type all" onClick={() => setSelectedType(null)}>All</li>
+          <li 
+            className={cn("types__type all", {'active': selectedType === null})} 
+            onClick={() => setSelectedType(null)}
+          >All</li>
         </ul>
       </div>
     </div>

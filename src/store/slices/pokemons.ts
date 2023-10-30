@@ -1,19 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { stat } from "fs";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
-import { 
-  AnotherPokemonType, 
-  PokemonInfoType, 
-  PokemonObjectType, 
-  PokemonType 
-} from "../../@types/pokemons/common";
+import { AnotherPokemonType, PokemonInfoType, PokemonType } from "../../@types/pokemons/common";
 import {
   FetchPokemonsByTypeParamsType,
   FetchPokemonsParamsType,
   FetchPokemonsType,
 } from "../../@types/pokemons/fetchTypes";
-import { AllTypesType } from "../../utils/some_data/allTypes";
+import { addPokemonToList } from "../../utils/addPokemonToList";
+import { fetchPokemonsInfoFunc } from "../../utils/fetchPokemonsInfoFunc";
+import { recountAll } from "../../utils/recountAll";
 
 interface PokemonsSlice {
   count: number;
@@ -36,44 +32,6 @@ const initialState: PokemonsSlice = {
   singlePokemon: {} as PokemonInfoType,
 };
 
-// --------- Functions ---------
-const fetchPokemonsInfoFunc = async (url: string) => {
-  const { data } = await axios.get(`${url}`);
-  const { id, name, stats, weight, types, height } = data;
-  const obj: PokemonInfoType = {
-    id,
-    url,
-    name,
-    types,
-    stats,
-    weight,
-    height,
-    image: data.sprites.other.dream_world.front_default,
-    image_reserve: data.sprites.other.home.front_default,
-  };
-  return obj;
-};
-const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {
-  const pokemonId = parseInt(
-    addedPokemon.url
-      .replace("https://pokeapi.co/api/v2/pokemon/", "") // get "id/"
-      .replace("/", "") // get "id"
-  );
-  const main_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`
-  const reserve_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`
-
-  const pokemonObj: PokemonObjectType = {
-    name: addedPokemon.name,
-    url: addedPokemon.url,
-    image: main_url,
-    image_reserve: reserve_url,
-    id: pokemonId,
-    types: [{ slot: 1, type: selectedType }],
-  };
-
-  return pokemonObj;
-};
-
 // --------- Async Thunks ---------
 export const fetchSinglePokemon = createAsyncThunk(
   "pokemons/fetchSinglePokemon",
@@ -83,7 +41,6 @@ export const fetchSinglePokemon = createAsyncThunk(
     return result
   }
 );
-
 export const fetchPokemons = createAsyncThunk(
   "pokemons/fetchPokemons",
   async ({ offset, limit }: FetchPokemonsParamsType) => {
@@ -102,19 +59,18 @@ export const fetchPokemons = createAsyncThunk(
     return obj;
   }
 );
-
 export const fetchPokemonsByType = createAsyncThunk(
   "pokemons/fetchPokemonsByType",
   async ({ url, selectedType, offset, limit }: FetchPokemonsByTypeParamsType) => {
     const { data } = await axios.get(url);
     if (data?.pokemon) {
-      const listPokemons = data.pokemon
+      const listPokemons: AnotherPokemonType[] = data.pokemon
         .filter((item: any) => (data.pokemon.indexOf(item) >= offset) 
-        && (data.pokemon.indexOf(item) <= offset + limit))
+        && (data.pokemon.indexOf(item) < offset + limit))
         .map((p: AnotherPokemonType) =>
           addPokemonToList(p.pokemon, selectedType)
         );
-      const returnedObj: any = {items: listPokemons, count: data.pokemon.length}
+      const returnedObj: any = {items: listPokemons, count: data.pokemon.length, limit}
       return returnedObj
     }
     if (data?.results) {
@@ -127,31 +83,19 @@ export const fetchPokemonsByType = createAsyncThunk(
   }
 );
 
-const recountAll = () => {
-
-}
-
 const pokemonsSlice = createSlice({
   name: "pokemons",
   initialState,
   reducers: {
-    setPages: (state) => {
-      const pagesCount = Math.ceil(state.count / 10);
-      state.portionsCount = Math.ceil(pagesCount / state.portionSize);
-      const allPages = [];
-      for (let i = 1; i <= pagesCount; i++) {
-        allPages.push(i);
-      }
-      state.pages = allPages;
+    setPages: (state, action: PayloadAction<number>) => {
+      const result = recountAll(state.count, action.payload, state.portionSize)
+      state.portionsCount = result.portionsCount
+      state.pages = result.allPages;
     },
     setRecountAll: (state, action: PayloadAction<number>) => {
-      const pagesCount = Math.ceil(state.count / action.payload);
-      state.portionsCount = Math.ceil(pagesCount / state.portionSize);
-      const allPages = [];
-      for (let i = 1; i <= pagesCount; i++) {
-        allPages.push(i);
-      }
-      state.pages = allPages;
+      const result = recountAll(state.count, action.payload, state.portionSize)
+      state.portionsCount = result.portionsCount
+      state.pages = result.allPages;
     }
   },
   extraReducers: (builder) => {
@@ -175,9 +119,10 @@ const pokemonsSlice = createSlice({
     builder.addCase(fetchPokemonsByType.fulfilled, (state, action) => {
       state.pokemonsInfoList = action.payload.items;
       state.count = action.payload.count;
-      const pagesCount = Math.ceil(state.count / 10);
-      state.portionsCount = Math.ceil(pagesCount / state.portionSize);
       state.status = StatusEnum.SUCCESS;
+      const result = recountAll(state.count, action.payload.limit, state.portionSize)
+      state.portionsCount = result.portionsCount
+      state.pages = result.allPages;
     });
     builder.addCase(fetchPokemonsByType.rejected, (state, action) => {
       state.errorMessage = action.error.message;
@@ -195,7 +140,6 @@ const pokemonsSlice = createSlice({
       state.errorMessage = action.error.message;
       state.status = StatusEnum.ERROR;
     });
-    // ------- - ------
   },
 });
 
