@@ -24,5 +24,4 @@ export const allTypes: AllTypesType[] = [
   { name: "fire", color: "#FF0000", url: 'https://pokeapi.co/api/v2/type/18/' },
   {name: 'unknown', color: "grey", url: 'https://pokeapi.co/api/v2/type/10001/' },
   {name: 'shadow', color: "#000", url: 'https://pokeapi.co/api/v2/type/10002/' },
-  {name: 'all', color: "#072AC8", url: 'https://pokeapi.co/api/v2/pokemon' }
 ];

@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { stat } from "fs";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
 import { 
   AnotherPokemonType, 
-  ListPokemonType, 
   PokemonInfoType, 
+  PokemonObjectType, 
   PokemonType 
 } from "../../@types/pokemons/common";
 import {
@@ -55,13 +56,13 @@ const fetchPokemonsInfoFunc = async (url: string) => {
 const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {
   const pokemonId = parseInt(
     addedPokemon.url
-      .replace("https://pokeapi.co/api/v2/pokemon/", "")
-      .replace("/", "")
+      .replace("https://pokeapi.co/api/v2/pokemon/", "") // get "id/"
+      .replace("/", "") // get "id"
   );
   const main_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`
   const reserve_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`
 
-  const listPokemon: ListPokemonType = {
+  const pokemonObj: PokemonObjectType = {
     name: addedPokemon.name,
     url: addedPokemon.url,
     image: main_url,
@@ -70,7 +71,7 @@ const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType)
     types: [{ slot: 1, type: selectedType }],
   };
 
-  return listPokemon;
+  return pokemonObj;
 };
 
 // --------- Async Thunks ---------
@@ -104,13 +105,17 @@ export const fetchPokemons = createAsyncThunk(
 
 export const fetchPokemonsByType = createAsyncThunk(
   "pokemons/fetchPokemonsByType",
-  async ({ url, selectedType }: FetchPokemonsByTypeParamsType) => {
+  async ({ url, selectedType, offset, limit }: FetchPokemonsByTypeParamsType) => {
     const { data } = await axios.get(url);
     if (data?.pokemon) {
-      const listPokemons = data.pokemon.map((p: AnotherPokemonType) =>
-        addPokemonToList(p.pokemon, selectedType)
-      );
-      return listPokemons;
+      const listPokemons = data.pokemon
+        .filter((item: any) => (data.pokemon.indexOf(item) >= offset) 
+        && (data.pokemon.indexOf(item) <= offset + limit))
+        .map((p: AnotherPokemonType) =>
+          addPokemonToList(p.pokemon, selectedType)
+        );
+      const returnedObj: any = {items: listPokemons, count: data.pokemon.length}
+      return returnedObj
     }
     if (data?.results) {
       const promises = data.results.map((item: PokemonType) =>
@@ -155,7 +160,10 @@ const pokemonsSlice = createSlice({
       state.status = StatusEnum.LOADING;
     });
     builder.addCase(fetchPokemonsByType.fulfilled, (state, action) => {
-      state.pokemonsInfoList = action.payload;
+      state.pokemonsInfoList = action.payload.items;
+      state.count = action.payload.count;
+      const pagesCount = Math.ceil(state.count / 10);
+      state.portionsCount = Math.ceil(pagesCount / state.portionSize);
       state.status = StatusEnum.SUCCESS;
     });
     builder.addCase(fetchPokemonsByType.rejected, (state, action) => {

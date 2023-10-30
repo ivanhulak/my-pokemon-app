@@ -14,6 +14,8 @@ type PaginationProps = {
 export const Pagination: React.FC<PaginationProps> = (
   { portionSize, handleChangePage, offsetPage, pages, portionsCount, portionNumber, setPortionNumber }
 ) => {
+  console.log("portionsCount", portionsCount)
+  console.log("portionNumber", portionNumber)
   
   const leftPortion = (portionNumber - 1) * portionSize + 1
   const rightPortion = portionNumber * portionSize

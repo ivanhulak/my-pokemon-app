@@ -19,11 +19,14 @@ import { AllTypesType } from "../utils/some_data/allTypes";
 
 export const HomePage: React.FC = () => {
   const [portionNumber, setPortionNumber] = React.useState(1);
-  const [selectedType, setSelectedType] = React.useState<AllTypesType | null>(null);
+  const [selectedType, setSelectedType] = React.useState<AllTypesType | null>(
+    null
+  );
   const dispatch = useAppDispatch();
   const { offsetPage, limit } = useSelector((state: any) => state.filters);
   const { count, status, pages, portionSize, portionsCount, pokemonsInfoList } =
     useSelector((state: any) => state.pokemons);
+
   const handleChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
     window.scroll({ top: 0, behavior: "smooth" });
@@ -36,26 +39,31 @@ export const HomePage: React.FC = () => {
     };
     dispatch(fetchPokemons(params));
   };
-
-  React.useEffect(() => {
-    fetchDataFunc();
-  }, [offsetPage]);
-
-  React.useEffect(() => {
-    dispatch(setPages());
-  }, [count]);
-
-  React.useEffect(() => {
+  const fetchDataByTypeFunc = () => {
     if (selectedType) {
       const params: FetchPokemonsByTypeParamsType = {
         url: selectedType.url,
         selectedType,
+        offset: offsetPage,
+        limit,
       };
       dispatch(fetchPokemonsByType(params));
     } else {
       fetchDataFunc();
     }
-  }, [selectedType]);
+  };
+
+  React.useEffect(() => {
+    if (selectedType !== null) fetchDataByTypeFunc()
+    if(selectedType === null) fetchDataFunc();
+  }, [offsetPage, selectedType]);
+
+  React.useEffect(() => {
+    dispatch(setPages());
+  }, [count]);
+  React.useEffect(() => {
+    dispatch(setCurrentPage(0))
+  }, [selectedType])
 
   return (
     <>

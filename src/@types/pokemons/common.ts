@@ -28,7 +28,7 @@ export type PokemonInfoType = {
 };
 
 // Needs to be fixed
-export type ListPokemonType = {
+export type PokemonObjectType = {
   id: number;
   url: string;
   name: string;

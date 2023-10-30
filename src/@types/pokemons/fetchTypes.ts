@@ -15,7 +15,9 @@ export type FetchPokemonsParamsType = {
 
 export type FetchPokemonsByTypeParamsType = {
   url: string;
-  selectedType: AllTypesType
+  selectedType: AllTypesType;
+  offset: number;
+  limit: number;
 }
 
 export type FetchPokemonInfo = {

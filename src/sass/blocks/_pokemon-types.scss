@@ -23,5 +23,8 @@
          transform: scale(1.2);
          box-shadow: 1px 3px 3px 0px var(--grey);
       }
+      &.all{
+         background: #072AC8;
+      }
    }
 }
