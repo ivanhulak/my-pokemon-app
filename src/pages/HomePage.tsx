@@ -8,11 +8,12 @@ import {
 import { Pagination } from "../components/Pagination";
 import { PokemonsBlock } from "../components/Pokemons/PokemonsBlock";
 import { PokemonTypes } from "../components/PokemonTypes";
-import { setCurrentPage } from "../store/slices/filters";
+import { setCurrentPage, setLimit } from "../store/slices/filters";
 import {
   fetchPokemons,
   fetchPokemonsByType,
   setPages,
+  setRecountAll,
 } from "../store/slices/pokemons";
 import { useAppDispatch } from "../store/store";
 import { AllTypesType } from "../utils/some_data/allTypes";
@@ -30,6 +31,9 @@ export const HomePage: React.FC = () => {
   const handleChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
     window.scroll({ top: 0, behavior: "smooth" });
+  };
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setLimit(Number(event.target.value)));
   };
 
   const fetchDataFunc = () => {
@@ -56,7 +60,7 @@ export const HomePage: React.FC = () => {
   React.useEffect(() => {
     if (selectedType !== null) fetchDataByTypeFunc()
     if(selectedType === null) fetchDataFunc();
-  }, [offsetPage, selectedType]);
+  }, [offsetPage, selectedType, limit]);
 
   React.useEffect(() => {
     dispatch(setPages());
@@ -64,6 +68,9 @@ export const HomePage: React.FC = () => {
   React.useEffect(() => {
     dispatch(setCurrentPage(0))
   }, [selectedType])
+  React.useEffect(() => {
+    dispatch(setRecountAll(limit))
+  }, [limit])
 
   return (
     <>
@@ -81,6 +88,8 @@ export const HomePage: React.FC = () => {
           portionsCount={portionsCount}
           portionNumber={portionNumber}
           setPortionNumber={setPortionNumber}
+          limit={limit}
+          handleSelectChange={handleSelectChange}
         />
       )}
     </>

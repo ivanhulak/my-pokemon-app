@@ -23,9 +23,12 @@ const filtersSlice = createSlice({
     },
     setSearch(state, action: PayloadAction<string>){
       state.search = action.payload
-    }
+    },
+    setLimit(state, action: PayloadAction<number>){
+      state.limit = action.payload
+    },
   },
 })
 
-export const { setCurrentPage, setSearch } = filtersSlice.actions
+export const { setCurrentPage, setSearch, setLimit } = filtersSlice.actions
 export default filtersSlice.reducer

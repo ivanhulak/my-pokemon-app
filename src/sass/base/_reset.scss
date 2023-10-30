@@ -57,6 +57,9 @@ input, textarea, button, select {
     color: inherit;
     background-color: transparent;
 }
+select::-ms-expand {
+	display: none;
+}
 
 input::-ms-clear {
 	display: none;

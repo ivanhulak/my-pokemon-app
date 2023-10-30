@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { stat } from "fs";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
@@ -127,6 +127,10 @@ export const fetchPokemonsByType = createAsyncThunk(
   }
 );
 
+const recountAll = () => {
+
+}
+
 const pokemonsSlice = createSlice({
   name: "pokemons",
   initialState,
@@ -140,6 +144,15 @@ const pokemonsSlice = createSlice({
       }
       state.pages = allPages;
     },
+    setRecountAll: (state, action: PayloadAction<number>) => {
+      const pagesCount = Math.ceil(state.count / action.payload);
+      state.portionsCount = Math.ceil(pagesCount / state.portionSize);
+      const allPages = [];
+      for (let i = 1; i <= pagesCount; i++) {
+        allPages.push(i);
+      }
+      state.pages = allPages;
+    }
   },
   extraReducers: (builder) => {
     // ------- fetchPokemons ------
@@ -186,5 +199,5 @@ const pokemonsSlice = createSlice({
   },
 });
 
-export const { setPages } = pokemonsSlice.actions;
+export const { setPages, setRecountAll } = pokemonsSlice.actions;
 export default pokemonsSlice.reducer;
