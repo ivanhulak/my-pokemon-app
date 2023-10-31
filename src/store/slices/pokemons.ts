@@ -7,6 +7,7 @@ import {
   FetchPokemonsParamsType,
   FetchPokemonsType,
 } from "../../@types/pokemons/fetchTypes";
+import { POKEMON_API_POKEMON_URL } from "../../constants";
 import { addPokemonToList } from "../../utils/addPokemonToList";
 import { fetchPokemonsInfoFunc } from "../../utils/fetchPokemonsInfoFunc";
 import { recountAll } from "../../utils/recountAll";
@@ -38,7 +39,7 @@ const initialState: PokemonsSlice = {
 export const fetchSinglePokemon = createAsyncThunk(
   "pokemons/fetchSinglePokemon",
   async ({ id }: any ) => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${id}`
+    const url = `${POKEMON_API_POKEMON_URL}/${id}`
     const result = await fetchPokemonsInfoFunc(url)
     return result
   }
@@ -47,8 +48,7 @@ export const fetchPokemons = createAsyncThunk(
   "pokemons/fetchPokemons",
   async ({ offset, limit }: FetchPokemonsParamsType) => {
     const { data } = await axios.get<FetchPokemonsType>(
-      "https://pokeapi.co/api/v2/pokemon",
-      { params: { offset, limit } }
+      POKEMON_API_POKEMON_URL, { params: { offset, limit } }
     );
     const promises = data.results.map((item: PokemonType) =>
       fetchPokemonsInfoFunc(item.url)
@@ -84,26 +84,6 @@ export const fetchPokemonsByType = createAsyncThunk(
     }
   }
 );
-// export const fetchPokemonsByName = createAsyncThunk("pokemons/fetchPokemonsByName",
-//   async({ offset, limit, search, pokemonsInfoList }: FetchPokemonsByNameParamsType) => {
-//     // const { data } = await axios.get<FetchPokemonsType>(
-//     //   'https://pokeapi.co/api/v2/pokemon/',
-//     //   { params: { offset, limit } }
-//     // );
-//     // const promises = data.results
-//     //   .filter((obj: PokemonType) => obj.name.includes(search))
-//     //   .map((item: PokemonType) =>
-//     //     fetchPokemonsInfoFunc(item.url)
-//     //   );
-//     // const info = await Promise.all(promises);
-//     // const obj: { count: number, info: PokemonInfoType[] } = {
-//     //   count: data.count,
-//     //   info,
-//     // };
-//     // return obj;
-//     // const result = pokemonsInfoList.filter((obj) => obj.name.includes(search))
-//   }
-// )
 
 const pokemonsSlice = createSlice({
   name: "pokemons",

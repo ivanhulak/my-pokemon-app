@@ -12,6 +12,7 @@ import { setDeviceType } from "./store/slices/pokemons";
 export const App: React.FC = () => {
   const dispatch = useAppDispatch()
   
+  // check if resize and react on it
   React.useEffect(() => {
     const handleLoadApp = () => {
       if(window.innerWidth <= 768) dispatch(setDeviceType(true))
