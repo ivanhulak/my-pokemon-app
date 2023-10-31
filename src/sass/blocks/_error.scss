@@ -42,5 +42,8 @@
     &:hover{
       background: #000;
     }
+    &.nav{
+      background-color: var(--main-blue);
+    }
   }
 }

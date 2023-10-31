@@ -137,6 +137,9 @@ const pokemonsSlice = createSlice({
       const result = recountAll(state.count, action.payload.limit, state.portionSize)
       state.portionsCount = result.portionsCount
       state.pages = result.allPages;
+      if(!action.payload.items.length){
+        state.status = StatusEnum.ERROR
+      }
     });
     builder.addCase(fetchPokemonsByType.rejected, (state, action) => {
       state.errorMessage = action.error.message;

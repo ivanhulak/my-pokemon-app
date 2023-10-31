@@ -34,7 +34,10 @@ export const App: React.FC = () => {
           <Route path='/' element={<HomePage />}/>
           <Route path='/home' element={<HomePage />}/>
           <Route path='/pokemon/:id' element={<SinglePokemonPage />}/> 
-          <Route path='*' element={<Error callback={() => document.location.reload()} error={'Not found page'}/>}/>
+          <Route path='*' element={
+            <Error 
+              callback={() => document.location.reload()} 
+              error={'Not found page'}/>}/>
         </Routes>
       </div>
       <Footer />
