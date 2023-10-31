@@ -75,10 +75,10 @@ export const HomePage: React.FC = () => {
   }, [count]);
   React.useEffect(() => {
     dispatch(setCurrentPage({page: 0, limit}))
+    setPortionNumber(1)
   }, [selectedType])
   React.useEffect(() => {
     if(search){
-      // dispatch(fetchPokemonsByName({offset: offsetPage, limit, search}))
       dispatch(setPokemonsByName(search))
     }
   }, [search])

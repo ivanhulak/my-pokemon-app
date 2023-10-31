@@ -4,14 +4,12 @@ interface FiltersSlice {
    offsetPage: number;
    limit: number;
    search: string | null;
-   portionSize: number;
 }
 
 const initialState: FiltersSlice = { 
    offsetPage: 0,
    limit: 10,
    search: null,
-   portionSize: 10
 }
 
 const filtersSlice = createSlice({
@@ -27,7 +25,7 @@ const filtersSlice = createSlice({
     setLimit(state, action: PayloadAction<number>){
       state.limit = action.payload
       state.offsetPage = 0
-    },
+    }
   },
 })
 

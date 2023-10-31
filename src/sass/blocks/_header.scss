@@ -2,14 +2,20 @@
   background: var(--main-blue);
 
   &__body {
-    padding: 50px 0px;
+    @include adaptiveValue('padding-top', 50, 30);
+    @include adaptiveValue('padding-bottom', 50, 20);
     box-shadow: 0 0 200px 10px #072ac8 inset;
     background: url("../../assets/img/pokeball.png") right -50px / contain no-repeat;
+    @media (max-width: 768px){
+      background-position: right center;
+      background-size: 70%;
+    }
   }
   &__title {
-    font-size: 64px;
+    max-width: 70%;
+    @include adaptiveValue('font-size', 64, 30);
     font-weight: 700;
     color: var(--white);
-    margin-bottom: 30px;
+    @include adaptiveValue('margin-bottom', 30, 10);
   }
 }

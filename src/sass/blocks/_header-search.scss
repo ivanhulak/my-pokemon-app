@@ -1,6 +1,6 @@
 .header__search {
   background: var(--white);
-  height: 45px;
+  @include adaptiveValue('height', 45, 35);
   border-radius: 24px;
   padding: 2px 2px 2px 20px;
   display: flex;
@@ -9,21 +9,21 @@
   gap: 10px;
   &-input {
     flex: 1 1 100%;
-    font-size: 18px;
+    @include adaptiveValue('font-size', 18, 14);
     color: var(--grey);
   }
   &-loupe {
     svg {
-      width: 26px;
-      height: 26px;
+      @include adaptiveValue('width', 26, 22);
+      @include adaptiveValue('height', 26, 22);
       fill: #595f65;
     }
   }
   &-clear {
     cursor: pointer;
     svg {
-      width: 26px;
-      height: 26px;
+      @include adaptiveValue('width', 26, 22);
+      @include adaptiveValue('height', 26, 22);
     }
   }
   &-box {
@@ -31,17 +31,19 @@
   }
   &-inner-box {
     display: flex;
-    gap: 12px;
+    @include adaptiveValue('gap', 12, 5);
     align-items: center;
   }
   &-btn {
     background-color: var(--grey);
-    padding: 5px 20px;
-    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include adaptiveValue('width', 100, 70);
     height: 100%;
     border-radius: 24px;
     color: var(--white);
-    font-size: 22px;
+    @include adaptiveValue('font-size', 22, 16);
     text-transform: uppercase;
     transition: all 0.3s ease;
     position: relative;
@@ -57,7 +59,7 @@
 .btn-pokeball {
   position: absolute;
   left: -3px;
-  top: 0;
+  @include adaptiveValue('top', 0, -5);
   width: 41px;
   height: 41px;
   transform: translateX(-100%);
@@ -95,27 +97,27 @@
 }
 
 /* Move sphere from left to right */
-// @-moz-keyframes moveLeftToRight {
-//   0% {
-//     left: 0px
-//   }
-//   100% {
-//     left: 100%;
-//   }
-// }
+@-moz-keyframes moveLeftToRight {
+  0% {
+    left: 0px
+  }
+  100% {
+    @include adaptiveValue('left', 56, 23);
+  }
+}
 @keyframes moveLeftToRight {
   0% {
     left: 0px;
   }
   100% {
-    left: 56px;
+    @include adaptiveValue('left', 56, 23);
   }
 }
-// @-webkit-keyframes moveLeftToRight {
-//   0% {
-//     left: -100px;
-//   }
-//   100% {
-//     left: 100%;
-//   }
-// }
+@-webkit-keyframes moveLeftToRight {
+  0% {
+    left: 0px;
+  }
+  100% {
+    @include adaptiveValue('left', 56, 23);
+  }
+}

@@ -3,7 +3,6 @@ import axios from "axios";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
 import { AnotherPokemonType, PokemonInfoType, PokemonType } from "../../@types/pokemons/common";
 import {
-  FetchPokemonsByNameParamsType,
   FetchPokemonsByTypeParamsType,
   FetchPokemonsParamsType,
   FetchPokemonsType,
@@ -21,6 +20,7 @@ interface PokemonsSlice {
   portionSize: number;
   portionsCount: number;
   singlePokemon: PokemonInfoType;
+  isMobile: null | boolean;
 }
 const initialState: PokemonsSlice = {
   count: 0,
@@ -31,6 +31,7 @@ const initialState: PokemonsSlice = {
   pokemonsInfoList: [],
   errorMessage: undefined,
   singlePokemon: {} as PokemonInfoType,
+  isMobile: null
 };
 
 // --------- Async Thunks ---------
@@ -123,6 +124,13 @@ const pokemonsSlice = createSlice({
         return obj.name.includes(action.payload)
       })
     },
+    setDeviceType(state, action: PayloadAction<boolean>){
+      state.isMobile = action.payload
+      state.portionSize = 10
+      if(action.payload){
+        state.portionSize = 5
+      }
+    }
   },
   extraReducers: (builder) => {
     // ------- fetchPokemons ------
@@ -182,5 +190,5 @@ const pokemonsSlice = createSlice({
   },
 });
 
-export const { setPages, setRecountAll, setPokemonsByName } = pokemonsSlice.actions;
+export const { setPages, setRecountAll, setPokemonsByName, setDeviceType } = pokemonsSlice.actions;
 export default pokemonsSlice.reducer;

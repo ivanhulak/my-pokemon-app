@@ -2,7 +2,8 @@
   cursor: pointer;
   border-radius: 12px;
   padding: 30px;
-  min-height: 368px;
+  @include adaptiveValue('padding', 30, 20);
+  @include adaptiveValue('min-height', 368, 200);
   box-shadow: 0px 6px 12px 0px rgb(53, 109, 214, 0.7);
   transition: all 0.5s ease;
   &:hover {
@@ -25,7 +26,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    @include adaptiveValue('margin-bottom', 20, 10);
   }
   &__id{
     background: #F8F9FA;
@@ -41,6 +42,9 @@
   &__image {
     position: relative;
     padding: 50%;
+    @media (max-width: 540px){
+      padding: 30%;
+    }
     img {
       position: absolute;
       left: 0;
