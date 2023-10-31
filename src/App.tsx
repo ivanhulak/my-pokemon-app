@@ -5,9 +5,9 @@ import { Header } from "./components/Header/Header";
 import { SinglePokemonPage } from "./pages/SinglePokemonPage";
 import "./sass/main.scss";
 import { HomePage } from "./pages/HomePage";
-import { NotFoundPage } from "./pages/NotFoundPage";
 import { useAppDispatch } from "./store/store";
 import { setDeviceType } from "./store/slices/pokemons";
+import { Error } from "./pages/Error";
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -32,8 +32,9 @@ export const App: React.FC = () => {
       <div className="content">
         <Routes>
           <Route path='/' element={<HomePage />}/>
+          <Route path='/home' element={<HomePage />}/>
           <Route path='/pokemon/:id' element={<SinglePokemonPage />}/> 
-          <Route path='*' element={<NotFoundPage />}/>
+          <Route path='*' element={<Error callback={() => document.location.reload()} error={'Not found page'}/>}/>
         </Routes>
       </div>
       <Footer />

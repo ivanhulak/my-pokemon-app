@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
 import { PokemonInfoType } from "../../@types/pokemons/common";
-import { Error } from "../Error";
+import { Error } from "../../pages/Error";
 import { NoPokemonsFound } from "../NoPokemonsFound";
 import { LoadingPokemon } from "./LoadingPokemon";
 import { Pokemon } from "./Pokemon";

@@ -44,8 +44,6 @@ export const HomePage: React.FC = () => {
       limit,
     };
     dispatch(fetchPokemons(params));
-    setSelectedType(null)
-    dispatch(setSearch(null))
   };
   const fetchDataByTypeFunc = () => {
     if (selectedType) {
@@ -68,7 +66,11 @@ export const HomePage: React.FC = () => {
   }, [limit])
   React.useEffect(() => {
     if (selectedType !== null) fetchDataByTypeFunc()
-    if(selectedType === null) fetchDataFunc();
+    if(selectedType === null) {
+      fetchDataFunc()
+      setSelectedType(null)
+      dispatch(setSearch(null))
+    };
   }, [offsetPage, selectedType, limit]);
   React.useEffect(() => {
     dispatch(setPages(limit));
