@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/my-pokemon-app/static/css/main.a6a8f6b8.css",
-    "main.js": "/my-pokemon-app/static/js/main.e6271cfe.js",
+    "main.css": "/my-pokemon-app/static/css/main.2cd8dcda.css",
+    "main.js": "/my-pokemon-app/static/js/main.96bd3af6.js",
     "static/media/pokeball.png": "/my-pokemon-app/static/media/pokeball.61809de4531b4351788b.png",
     "static/media/pokeball-loader.gif": "/my-pokemon-app/static/media/pokeball-loader.5b80b20c2dfd81a68eee.gif",
     "static/media/not-found-pikachu.png": "/my-pokemon-app/static/media/not-found-pikachu.a4bed87cc42f9d0bdc50.png",
     "static/media/no-pokemon.png": "/my-pokemon-app/static/media/no-pokemon.7fdbabe86b3641401a40.png",
     "index.html": "/my-pokemon-app/index.html",
-    "main.a6a8f6b8.css.map": "/my-pokemon-app/static/css/main.a6a8f6b8.css.map",
-    "main.e6271cfe.js.map": "/my-pokemon-app/static/js/main.e6271cfe.js.map"
+    "main.2cd8dcda.css.map": "/my-pokemon-app/static/css/main.2cd8dcda.css.map",
+    "main.96bd3af6.js.map": "/my-pokemon-app/static/js/main.96bd3af6.js.map"
   },
   "entrypoints": [
-    "static/css/main.a6a8f6b8.css",
-    "static/js/main.e6271cfe.js"
+    "static/css/main.2cd8dcda.css",
+    "static/js/main.96bd3af6.js"
   ]
 }
