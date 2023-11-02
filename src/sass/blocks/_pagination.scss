@@ -88,10 +88,10 @@
   justify-content: center;
   @include adaptiveValue('padding-top', 20, 10);
   &-inner{
-    @include adaptiveValue('padding-top', 20, 10);
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    @include adaptiveValue('padding-top', 20, 10);
     background: var(--main-blue);
     padding: 10px 40px;
     border-radius: 18px;
@@ -103,6 +103,9 @@
     @media (max-width: 475px){
       padding: 10px 15px;
       font-size: 14px;
+    }
+    &.seeAll{
+      cursor: pointer;
     }
   }
   &-text{

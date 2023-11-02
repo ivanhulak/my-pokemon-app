@@ -1,8 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
 import { PokemonInfoType } from "../../@types/pokemons/common";
 import { Error } from "../../pages/Error";
+import { selectPokemonsData } from "../../store/slices/pokemons";
+import { useAppSelector } from "../../store/store";
 import { NoPokemonsFound } from "../NoPokemonsFound";
 import { LoadingPokemon } from "./LoadingPokemon";
 import { Pokemon } from "./Pokemon";
@@ -14,7 +15,7 @@ type PokemonsBlockProps = {
 }
 
 export const PokemonsBlock: React.FC<PokemonsBlockProps> = ({ fetchDataFunc }) => {
-  const { status, pokemonsInfoList, errorMessage } = useSelector((state: any) => state.pokemons);
+  const { status, pokemonsInfoList, errorMessage } = useAppSelector(selectPokemonsData);
 
   const skeleton = Array(SKELETONS_COUNT).fill(null).map((_, idx) => <LoadingPokemon key={idx} />);
   const pokemonItems = pokemonsInfoList.map((pkmn: PokemonInfoType) => (

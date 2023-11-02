@@ -5,9 +5,12 @@ import { allTypes, AllTypesType } from "../utils/allTypes";
 type PokemonTypesProps = {
    selectedType: AllTypesType | null;
    setSelectedType: (t: AllTypesType | null) => void;
+   handleSeeAll: () => void;
 }
 
-export const PokemonTypes: React.FC<PokemonTypesProps> = ({ selectedType, setSelectedType }) => {
+export const PokemonTypes: React.FC<PokemonTypesProps> = (
+  { handleSeeAll, selectedType, setSelectedType }) => {
+
   return (
     <div className="types">
       <div className="container">
@@ -24,7 +27,7 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = ({ selectedType, setSel
           ))}
           <li 
             className={cn("types__type all", {'active': selectedType === null})} 
-            onClick={() => setSelectedType(null)}
+            onClick={handleSeeAll}
           >All</li>
         </ul>
       </div>

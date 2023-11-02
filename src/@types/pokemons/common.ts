@@ -27,7 +27,6 @@ export type PokemonInfoType = {
   image_reserve: string;
 };
 
-// Needs to be fixed
 export type PokemonObjectType = {
   id: number;
   url: string;
@@ -35,8 +34,4 @@ export type PokemonObjectType = {
   types: PokemonTypesType[];
   image: string;
   image_reserve: string;
-  // !!!!!!! needs to be here also !!!!!!!!
-  // stats: PokemonStatItem[];
-  // weight: number;
-  // height: number;
 }

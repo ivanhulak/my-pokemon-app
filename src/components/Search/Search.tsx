@@ -15,6 +15,10 @@ export const Search: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
+  const onHandleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key === 'Enter') onHandleSearch()
+  }
+
   const onHandleSearch = () => {
     inputRef.current?.blur()
     dispatch(setSearch(searchValue));
@@ -40,9 +44,10 @@ export const Search: React.FC = () => {
             ref={inputRef}
             className="header__search-input"
             type="text"
-            placeholder="E.g. Pickachu"
+            placeholder="E.g. Pikachu"
             value={searchValue}
             onChange={handleInputChange}
+            onKeyDown={onHandleKeyDown}
             disabled={isActive}
           />
           {searchValue && 

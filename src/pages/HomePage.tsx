@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { StatusEnum } from "../@types/enums/StatusEnum";
 import {
   FetchPokemonsByTypeParamsType,
@@ -11,21 +10,23 @@ import { PokemonTypes } from "../components/PokemonTypes";
 import { setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
 import {
   fetchPokemons,
-  setPokemonsByName,
   setPages,
   setRecountAll,
   fetchPokemonsByType,
+  selectPokemonsData,
+  fetchPokemonByName,
 } from "../store/slices/pokemons";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { AllTypesType } from "../utils/allTypes";
 
 export const HomePage: React.FC = () => {
   const [portionNumber, setPortionNumber] = React.useState(1);
+  const [isFounded, setIsFounded] = React.useState(false);
   const [selectedType, setSelectedType] = React.useState<AllTypesType | null>(null);
   const dispatch = useAppDispatch();
   const { offsetPage, limit, search } = useAppSelector((state) => state.filters);
   const { count, status, pages, portionSize, portionsCount, pokemonsInfoList } =
-    useSelector((state: any) => state.pokemons);
+    useAppSelector(selectPokemonsData);
 
   // ----- Handlers that react on change page and limit ----
   const handleChangePage = (page: number) => {
@@ -35,6 +36,12 @@ export const HomePage: React.FC = () => {
   const handleLimitChange = (value: number) => {
     dispatch(setLimit(value))
   };
+  const handleSeeAll = () => {
+    setIsFounded(false)
+    fetchDataFunc()
+    dispatch(setSearch(null))
+    setSelectedType(null)
+  }
 
   // ---- Functions that loaded data ----
   const fetchDataFunc = () => {
@@ -62,7 +69,7 @@ export const HomePage: React.FC = () => {
   React.useEffect(() => {
     dispatch(setRecountAll(limit))
     setPortionNumber(1)
-  }, [limit])
+  }, [dispatch, limit])
   React.useEffect(() => {
     if (selectedType !== null) fetchDataByTypeFunc()
     if(selectedType === null) {
@@ -70,37 +77,58 @@ export const HomePage: React.FC = () => {
       setSelectedType(null)
       dispatch(setSearch(null))
     };
-  }, [offsetPage, selectedType, limit]);
+  }, [dispatch, offsetPage, selectedType, limit]);
   React.useEffect(() => {
     dispatch(setPages(limit));
-  }, [count]);
+  }, [dispatch, count]);
   React.useEffect(() => {
     dispatch(setCurrentPage({page: 0, limit}))
     setPortionNumber(1)
-  }, [selectedType])
+  }, [dispatch, selectedType])
+
+  
   React.useEffect(() => {
     if(search){
-      dispatch(setPokemonsByName(search))
+      setIsFounded(true)
+      dispatch(fetchPokemonByName({ search }))
     }
-  }, [search])
+  }, [dispatch, search])
   
   return (
     <>
-      <PokemonTypes setSelectedType={setSelectedType} selectedType={selectedType}/>
+      <PokemonTypes 
+        setSelectedType={setSelectedType} 
+        selectedType={selectedType}
+        handleSeeAll={handleSeeAll}
+      />
       <PokemonsBlock fetchDataFunc={fetchDataFunc} />
-      {status === StatusEnum.SUCCESS && pokemonsInfoList.length && (
-        <Pagination
-          portionSize={portionSize}
-          handleChangePage={handleChangePage}
-          offsetPage={offsetPage}
-          pages={pages}
-          portionsCount={portionsCount}
-          portionNumber={portionNumber}
-          setPortionNumber={setPortionNumber}
-          limit={limit}
-          handleLimitChange={handleLimitChange}
-        />
-      )}
+      {status === StatusEnum.SUCCESS 
+        && pokemonsInfoList.length !== 0
+        && !isFounded
+        && <Pagination 
+              portionSize={portionSize}
+              handleChangePage={handleChangePage}
+              offsetPage={offsetPage}
+              pages={pages}
+              portionsCount={portionsCount}
+              portionNumber={portionNumber}
+              setPortionNumber={setPortionNumber}
+              limit={limit}
+              handleLimitChange={handleLimitChange}
+            />
+      }
+      {isFounded && 
+        <div className="container">
+          <div className="pagination__settings">
+            <div 
+              className="pagination__settings-inner seeAll" 
+              onClick={handleSeeAll}
+            > 
+              <div className="pagination__settings-text">See all pokemons</div>
+            </div>
+          </div> 
+        </div> 
+        }
     </>
   );
 };

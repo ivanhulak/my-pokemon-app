@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import pickachu from "../assets/img/not-found-pikachu.png";
 import { CommonBtn } from "../components/common/CommonBtn";
 
-export const Error: React.FC<{ error: string, callback: () => void }> = ({ error, callback }) => {
+export const Error: React.FC<{ error: string | undefined, callback: () => void }> = ({ error, callback }) => {
   const onClickTryAgain = () => {
    callback()
   };

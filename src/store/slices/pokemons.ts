@@ -11,6 +11,7 @@ import { POKEMON_API_POKEMON_URL } from "../../constants";
 import { addPokemonToList } from "../../utils/functions/addPokemonToList";
 import { fetchPokemonsInfoFunc } from "../../utils/functions/fetchPokemonsInfoFunc";
 import { recountAll } from "../../utils/functions/recountAll";
+import { RootState } from "../store";
 
 interface PokemonsSlice {
   count: number;
@@ -40,8 +41,7 @@ export const fetchSinglePokemon = createAsyncThunk(
   "pokemons/fetchSinglePokemon",
   async ({ id }: any ) => {
     const url = `${POKEMON_API_POKEMON_URL}/${id}`
-    const result = await fetchPokemonsInfoFunc(url)
-    return result
+    return await fetchPokemonsInfoFunc(url)
   }
 );
 export const fetchPokemons = createAsyncThunk(
@@ -82,6 +82,18 @@ export const fetchPokemonsByType = createAsyncThunk(
       const info = await Promise.all(promises);
       return info;
     }
+  }
+);
+export const fetchPokemonByName = createAsyncThunk(
+  "pokemons/fetchPokemonByName",
+  async ({ search }: {search: string }) => {
+    const { data } = await axios.get(`${POKEMON_API_POKEMON_URL}?offset=0&limit=${1292}`)
+    const result = data.results.filter((pokemon: PokemonType) => 
+      pokemon.name.toLowerCase().includes(search.toLowerCase()))
+    const promises = result.map((item: PokemonType) =>
+      fetchPokemonsInfoFunc(item.url)
+    );
+    return { info: await Promise.all(promises) } as { info: PokemonInfoType[] };
   }
 );
 
@@ -157,21 +169,23 @@ const pokemonsSlice = createSlice({
       state.errorMessage = action.error.message;
       state.status = StatusEnum.ERROR;
     });
-    // ------- fetchPokemonsByName ------
-    // builder.addCase(fetchPokemonsByName.pending, (state) => {
-    //   state.status = StatusEnum.LOADING;
-    // });
-    // builder.addCase(fetchPokemonsByName.fulfilled, (state, action) => {
-    //   // state.pokemonsInfoList = action.payload.info;
-    //   // state.count = action.payload.count;
-    //   state.status = StatusEnum.SUCCESS;
-    // });
-    // builder.addCase(fetchPokemonsByName.rejected, (state, action) => {
-    //   state.errorMessage = action.error.message;
-    //   state.status = StatusEnum.ERROR;
-    // });
+    // ------- fetchPokemonByName ------
+    builder.addCase(fetchPokemonByName.pending, (state) => {
+      state.status = StatusEnum.LOADING;
+    });
+    builder.addCase(fetchPokemonByName.fulfilled, (state, action) => {
+      state.status = StatusEnum.SUCCESS;
+      state.pokemonsInfoList = action.payload.info;
+    });
+    builder.addCase(fetchPokemonByName.rejected, (state, action) => {
+      state.errorMessage = action.error.message;
+      state.status = StatusEnum.ERROR;
+    });
   },
 });
+
+// Selectors
+export const selectPokemonsData = (state: RootState) => state.pokemons
 
 export const { setPages, setRecountAll, setPokemonsByName, setDeviceType } = pokemonsSlice.actions;
 export default pokemonsSlice.reducer;
