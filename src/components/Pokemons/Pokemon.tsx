@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import no_pokemon from '../../assets/img/no-pokemon.png';
 import { PokemonID } from "../PokemonID";
-import { findColor } from "../../utils/findColor";
+import { findColor } from "../../utils/functions/findColor";
 import { PokemonInfoType, PokemonTypesType } from "../../@types/pokemons/common";
-import { allTypes } from "../../utils/some_data/allTypes";
+import { allTypes } from "../../utils/allTypes";
 import axios from "axios";
 
 export const Pokemon: React.FC<PokemonInfoType> = ({

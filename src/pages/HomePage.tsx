@@ -4,7 +4,6 @@ import { StatusEnum } from "../@types/enums/StatusEnum";
 import {
   FetchPokemonsByTypeParamsType,
   FetchPokemonsParamsType,
-  FetchPokemonsType,
 } from "../@types/pokemons/fetchTypes";
 import { Pagination } from "../components/Pagination";
 import { PokemonsBlock } from "../components/Pokemons/PokemonsBlock";
@@ -17,14 +16,14 @@ import {
   setRecountAll,
   fetchPokemonsByType,
 } from "../store/slices/pokemons";
-import { useAppDispatch } from "../store/store";
-import { AllTypesType } from "../utils/some_data/allTypes";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { AllTypesType } from "../utils/allTypes";
 
 export const HomePage: React.FC = () => {
   const [portionNumber, setPortionNumber] = React.useState(1);
   const [selectedType, setSelectedType] = React.useState<AllTypesType | null>(null);
   const dispatch = useAppDispatch();
-  const { offsetPage, limit, search } = useSelector((state: any) => state.filters);
+  const { offsetPage, limit, search } = useAppSelector((state) => state.filters);
   const { count, status, pages, portionSize, portionsCount, pokemonsInfoList } =
     useSelector((state: any) => state.pokemons);
 
@@ -33,8 +32,8 @@ export const HomePage: React.FC = () => {
     dispatch(setCurrentPage({ page, limit }));
     window.scroll({ top: 0, behavior: "smooth" });
   };
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setLimit(Number(event.target.value)));
+  const handleLimitChange = (value: number) => {
+    dispatch(setLimit(value))
   };
 
   // ---- Functions that loaded data ----
@@ -99,7 +98,7 @@ export const HomePage: React.FC = () => {
           portionNumber={portionNumber}
           setPortionNumber={setPortionNumber}
           limit={limit}
-          handleSelectChange={handleSelectChange}
+          handleLimitChange={handleLimitChange}
         />
       )}
     </>

@@ -1,4 +1,4 @@
-import { AllTypesType } from "../../utils/some_data/allTypes";
+import { AllTypesType } from "../../utils/allTypes";
 import { PokemonInfoType, PokemonStatItem, PokemonType, PokemonTypesType } from "./common";
 
 export type FetchPokemonsType = {

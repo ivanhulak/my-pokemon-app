@@ -10,21 +10,21 @@ import { setDeviceType } from "./store/slices/pokemons";
 import { Error } from "./pages/Error";
 
 export const App: React.FC = () => {
-  const dispatch = useAppDispatch()
-  
+  const dispatch = useAppDispatch();
+
   // check if resize and react on it
   React.useEffect(() => {
     const handleLoadApp = () => {
-      if(window.innerWidth <= 768) dispatch(setDeviceType(true))
-      if(window.innerWidth > 768) dispatch(setDeviceType(false))
-    }
-    window.addEventListener('load', handleLoadApp)
-    window.addEventListener('resize', handleLoadApp)
+      if (window.innerWidth <= 768) dispatch(setDeviceType(true));
+      if (window.innerWidth > 768) dispatch(setDeviceType(false));
+    };
+    window.addEventListener("load", handleLoadApp);
+    window.addEventListener("resize", handleLoadApp);
     return () => {
-      window.removeEventListener('load', handleLoadApp)
-      window.addEventListener('resize', handleLoadApp)
-    }
-  }, [])
+      window.removeEventListener("load", handleLoadApp);
+      window.removeEventListener("resize", handleLoadApp);
+    };
+  }, []);
 
   return (
     <div className="wrapper">

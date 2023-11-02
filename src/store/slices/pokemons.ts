@@ -8,9 +8,9 @@ import {
   FetchPokemonsType,
 } from "../../@types/pokemons/fetchTypes";
 import { POKEMON_API_POKEMON_URL } from "../../constants";
-import { addPokemonToList } from "../../utils/addPokemonToList";
-import { fetchPokemonsInfoFunc } from "../../utils/fetchPokemonsInfoFunc";
-import { recountAll } from "../../utils/recountAll";
+import { addPokemonToList } from "../../utils/functions/addPokemonToList";
+import { fetchPokemonsInfoFunc } from "../../utils/functions/fetchPokemonsInfoFunc";
+import { recountAll } from "../../utils/functions/recountAll";
 
 interface PokemonsSlice {
   count: number;

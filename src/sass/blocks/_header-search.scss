@@ -11,17 +11,32 @@
     flex: 1 1 100%;
     @include adaptiveValue('font-size', 18, 14);
     color: var(--grey);
-  }
-  &-loupe {
-    svg {
-      @include adaptiveValue('width', 26, 22);
-      @include adaptiveValue('height', 26, 22);
-      fill: #595f65;
+    &:disabled::-webkit-input-placeholder { /* WebKit browsers */
+      color:var(--disabled-grey);
+      cursor: not-allowed;
+    }
+    &:disabled::-moz-placeholder  { /* Mozilla Firefox 4 to 18 */
+      color:var(--disabled-grey);
+      cursor: not-allowed;
+    }
+    &:disabled:-moz-placeholder  { /* Mozilla Firefox 19+ */
+      color:var(--disabled-grey);
+      cursor: not-allowed;
+    }
+    &:disabled::-ms-input-placeholder  { /* Internet Explorer 10+ */
+      color:var(--disabled-grey);
+      cursor: not-allowed;
     }
   }
-  &-clear {
+  &-loupe {
+    img {
+      @include adaptiveValue('width', 26, 22);
+      @include adaptiveValue('height', 26, 22);
+    }
+  }
+  &-close {
     cursor: pointer;
-    svg {
+    img {
       @include adaptiveValue('width', 26, 22);
       @include adaptiveValue('height', 26, 22);
     }

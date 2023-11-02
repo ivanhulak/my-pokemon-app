@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import { allTypes, AllTypesType } from "../utils/some_data/allTypes";
+import { allTypes, AllTypesType } from "../utils/allTypes";
 
 type PokemonTypesProps = {
    selectedType: AllTypesType | null;

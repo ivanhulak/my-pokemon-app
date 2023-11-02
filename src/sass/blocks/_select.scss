@@ -1,0 +1,63 @@
+.select{
+   &__container{
+      position: relative;
+      @include adaptiveValue('width', 50, 40);
+      @include adaptiveValue('min-height', 50, 40);
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      outline: none;
+      &:focus {
+         border-color: var(--blue-stroke);
+      }
+   }
+   &__value{
+      color: var(--white);
+      font-weight: 500;
+   }
+   &__options{
+      display: none;
+      position: absolute;
+      @include adaptiveValue('padding-top', 10, 5);
+      @include adaptiveValue('padding-bottom', 10, 5);
+      @include adaptiveValue('max-height', 150, 110);
+      overflow-y: auto;
+      border-radius: 10px;
+      border: 2px solid var(--blue-stroke);
+      text-align: center;
+      @include adaptiveValue('width', 100, 70);
+      left: 0;
+      bottom: 50px;
+      transform: translateX(-25%);
+      background-color: var(--main-blue);
+      z-index: 100;
+      box-shadow: 0px 0px 9px 0px var(--main-blue);
+      &.show{
+         display: block;
+      }
+   }
+   &__option{
+      color: var(--white);
+      font-weight: 500;
+      @include adaptiveValue('font-size', 20, 16);
+      @include adaptiveValue('padding', 5, 2);
+      @include adaptiveValue('margin-top', 5, 2);
+      @include adaptiveValue('margin-bottom', 5, 2);
+      @include adaptiveValue('margin-right', 10, 5);
+      @include adaptiveValue('margin-left', 10, 5);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      &:hover{
+         background: var(--white);
+         color: var(--main-blue)
+      }
+      &.selected{
+         border: 2px solid var(--blue-stroke);
+         background: var(--white);
+         color: var(--blue-stroke);
+      }
+   }
+}

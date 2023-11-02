@@ -1,5 +1,5 @@
-import { AllStatsType } from "./some_data/allStats";
-import { AllTypesType } from "./some_data/allTypes";
+import { AllStatsType } from "../allStats";
+import { AllTypesType } from "../allTypes";
 
 export const findColor = (
   arr: any,

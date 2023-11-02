@@ -1,5 +1,5 @@
-import { PokemonObjectType, PokemonType } from "../@types/pokemons/common";
-import { AllTypesType } from "./some_data/allTypes";
+import { PokemonObjectType, PokemonType } from "../../@types/pokemons/common";
+import { AllTypesType } from "../allTypes";
 
 export const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {
    const pokemonId = parseInt(

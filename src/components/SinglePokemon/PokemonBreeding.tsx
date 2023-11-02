@@ -4,13 +4,15 @@ type PokemonBreedingProps = {
   weight: number;
   height: number;
 };
+const CALC_HIGHT_KOEF = 3.281
+const CALC_WEIGHT_KOEF = 2.205
 
 export const PokemonBreeding: React.FC<PokemonBreedingProps> = ({
   weight,
   height,
 }) => {
-  const calculatedHeight = (height / 3.281).toFixed(2);
-  const calculatedWeigth = (weight * 2.205).toFixed(2);
+  const calculatedHeight = (height / CALC_HIGHT_KOEF).toFixed(2);
+  const calculatedWeigth = (weight * CALC_WEIGHT_KOEF).toFixed(2);
   return (
     <div className="singlePokemon__block block-breeding">
       <h2 className="block-breeding__title block-title">Breeding</h2>

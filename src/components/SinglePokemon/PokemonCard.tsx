@@ -5,9 +5,9 @@ import {
   PokemonTypesType,
 } from "../../@types/pokemons/common";
 import no_pokemon from "../../assets/img/no-pokemon.png";
-import { findColor } from "../../utils/findColor";
-import { allStats } from "../../utils/some_data/allStats";
-import { allTypes } from "../../utils/some_data/allTypes";
+import { findColor } from "../../utils/functions/findColor";
+import { allStats } from "../../utils/allStats";
+import { allTypes } from "../../utils/allTypes";
 import { PokeballLoader } from "../PokeballLoader";
 import { PokemonID } from "../PokemonID";
 

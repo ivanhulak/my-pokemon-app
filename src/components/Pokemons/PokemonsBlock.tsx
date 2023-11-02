@@ -7,6 +7,8 @@ import { NoPokemonsFound } from "../NoPokemonsFound";
 import { LoadingPokemon } from "./LoadingPokemon";
 import { Pokemon } from "./Pokemon";
 
+const SKELETONS_COUNT = 10
+
 type PokemonsBlockProps = {
   fetchDataFunc: () => void;
 }
@@ -14,7 +16,7 @@ type PokemonsBlockProps = {
 export const PokemonsBlock: React.FC<PokemonsBlockProps> = ({ fetchDataFunc }) => {
   const { status, pokemonsInfoList, errorMessage } = useSelector((state: any) => state.pokemons);
 
-  const skeleton = Array(10).fill(null).map((_, idx) => <LoadingPokemon key={idx} />);
+  const skeleton = Array(SKELETONS_COUNT).fill(null).map((_, idx) => <LoadingPokemon key={idx} />);
   const pokemonItems = pokemonsInfoList.map((pkmn: PokemonInfoType) => (
     <Pokemon key={pkmn.url} {...pkmn} />
   ));

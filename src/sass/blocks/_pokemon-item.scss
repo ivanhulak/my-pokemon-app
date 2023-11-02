@@ -1,5 +1,4 @@
 .box-pokemons__item {
-  cursor: pointer;
   border-radius: 12px;
   padding: 30px;
   @include adaptiveValue('padding', 30, 20);

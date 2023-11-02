@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PokemonInfoType } from "../@types/pokemons/common";
+import { PokemonInfoType } from "../../@types/pokemons/common";
 
 export const fetchPokemonsInfoFunc = async (url: string) => {
    const { data } = await axios.get(`${url}`);
