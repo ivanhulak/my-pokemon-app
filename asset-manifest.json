@@ -1,17 +1,23 @@
 {
   "files": {
-    "main.css": "/my-pokemon-app/static/css/main.2cd8dcda.css",
-    "main.js": "/my-pokemon-app/static/js/main.3a7265ae.js",
+    "main.css": "/my-pokemon-app/static/css/main.3b889fd6.css",
+    "main.js": "/my-pokemon-app/static/js/main.4a069f58.js",
     "static/media/pokeball.png": "/my-pokemon-app/static/media/pokeball.61809de4531b4351788b.png",
     "static/media/pokeball-loader.gif": "/my-pokemon-app/static/media/pokeball-loader.5b80b20c2dfd81a68eee.gif",
     "static/media/not-found-pikachu.png": "/my-pokemon-app/static/media/not-found-pikachu.a4bed87cc42f9d0bdc50.png",
     "static/media/no-pokemon.png": "/my-pokemon-app/static/media/no-pokemon.7fdbabe86b3641401a40.png",
+    "static/media/close-blue.svg": "/my-pokemon-app/static/media/close-blue.435faf82d98fb9c0cd5d80305e1f6b3c.svg",
+    "static/media/close.svg": "/my-pokemon-app/static/media/close.604737a01ee09bdf61e0573159ec0225.svg",
+    "static/media/close-black.svg": "/my-pokemon-app/static/media/close-black.0c9f7bde4ffe508a4a495fe86a309661.svg",
     "index.html": "/my-pokemon-app/index.html",
-    "main.2cd8dcda.css.map": "/my-pokemon-app/static/css/main.2cd8dcda.css.map",
-    "main.3a7265ae.js.map": "/my-pokemon-app/static/js/main.3a7265ae.js.map"
+    "static/media/search.svg": "/my-pokemon-app/static/media/search.c63e2f50e6d8668d024af47871be2000.svg",
+    "static/media/back-arrow.svg": "/my-pokemon-app/static/media/back-arrow.40a6aa83cf565d532503d5510a7e3239.svg",
+    "static/media/pag-btn.svg": "/my-pokemon-app/static/media/pag-btn.77ce483524b14726b98e7db83990ba39.svg",
+    "main.3b889fd6.css.map": "/my-pokemon-app/static/css/main.3b889fd6.css.map",
+    "main.4a069f58.js.map": "/my-pokemon-app/static/js/main.4a069f58.js.map"
   },
   "entrypoints": [
-    "static/css/main.2cd8dcda.css",
-    "static/js/main.3a7265ae.js"
+    "static/css/main.3b889fd6.css",
+    "static/js/main.4a069f58.js"
   ]
 }
