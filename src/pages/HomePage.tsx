@@ -1,34 +1,29 @@
 import React from "react";
 import { StatusEnum } from "../@types/enums/StatusEnum";
-import {
-  FetchPokemonsByTypeParamsType,
-  FetchPokemonsParamsType,
-} from "../@types/pokemons/fetchTypes";
+import { FetchPokemonsParamsType } from "../@types/pokemons/fetchTypes";
 import { Pagination } from "../components/Pagination";
 import { PokemonsBlock } from "../components/Pokemons/PokemonsBlock";
 import { PokemonTypes } from "../components/PokemonTypes";
-import { setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
+import { clearSelectedTypes, setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
 import {
   fetchPokemons,
-  setPages,
   setRecountAll,
-  fetchPokemonsByType,
   selectPokemonsData,
   fetchPokemonByName,
+  fetchPokemonsByType,
 } from "../store/slices/pokemons";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { AllTypesType } from "../utils/allTypes";
 
 export const HomePage: React.FC = () => {
   const [portionNumber, setPortionNumber] = React.useState(1);
-  const [isFounded, setIsFounded] = React.useState(false);
-  const [selectedType, setSelectedType] = React.useState<AllTypesType | null>(null);
+  const isMounted = React.useRef(false)
   const dispatch = useAppDispatch();
-  const { offsetPage, limit, search } = useAppSelector((state) => state.filters);
-  const { count, status, pages, portionSize, portionsCount, pokemonsInfoList } =
+  const { offsetPage, limit, search, selectedTypes } = useAppSelector((state) => state.filters);
+  const { count, status, pages, portionSize, portionsCount, pokemonsInfoList, totalCount } =
     useAppSelector(selectPokemonsData);
 
-  // ----- Handlers that react on change page and limit ----
+  // ----- Handlers -----
   const handleChangePage = (page: number) => {
     dispatch(setCurrentPage({ page, limit }));
     window.scroll({ top: 0, behavior: "smooth" });
@@ -37,10 +32,8 @@ export const HomePage: React.FC = () => {
     dispatch(setLimit(value))
   };
   const handleSeeAll = () => {
-    setIsFounded(false)
     fetchDataFunc()
     dispatch(setSearch(null))
-    setSelectedType(null)
   }
 
   // ---- Functions that loaded data ----
@@ -50,61 +43,50 @@ export const HomePage: React.FC = () => {
       limit,
     };
     dispatch(fetchPokemons(params));
-  };
-  const fetchDataByTypeFunc = () => {
-    if (selectedType) {
-      const params: FetchPokemonsByTypeParamsType = {
-        url: selectedType.url,
-        selectedType,
-        offset: offsetPage,
-        limit,
-      };
-      dispatch(fetchPokemonsByType(params));
-    } else {
-      fetchDataFunc();
-    }
+    dispatch(clearSelectedTypes())
   };
 
   // ---- Syncronises (UseEffects) -----
   React.useEffect(() => {
+    if(search){
+      dispatch(setCurrentPage({page: 0, limit}))
+      dispatch(fetchPokemonByName({ search, totalCount, offset: offsetPage, limit }))
+    } 
+    if(selectedTypes){
+      const params: {types: AllTypesType[] | undefined, limit: number, offset: number } = {
+        types: selectedTypes?.items,
+        offset: offsetPage,
+        limit,
+      };
+      dispatch(fetchPokemonsByType(params))
+    } if(search === null && selectedTypes === null){
+      fetchDataFunc()
+    }
+      
+  }, [dispatch, offsetPage, limit, search, totalCount]);
+  React.useEffect(() => {
+    dispatch(setRecountAll(limit));
+  }, [dispatch, count, limit]);
+  // set data to localStorage on second render
+  React.useEffect(() => {
+    if (isMounted.current){
+      const obj = {
+        limit,
+      }
+      const json = JSON.stringify(obj)
+      localStorage.setItem('data', json)
+    }
+    isMounted.current = true
     dispatch(setRecountAll(limit))
     setPortionNumber(1)
-  }, [dispatch, limit])
-  React.useEffect(() => {
-    if (selectedType !== null) fetchDataByTypeFunc()
-    if(selectedType === null) {
-      fetchDataFunc()
-      setSelectedType(null)
-      dispatch(setSearch(null))
-    };
-  }, [dispatch, offsetPage, selectedType, limit]);
-  React.useEffect(() => {
-    dispatch(setPages(limit));
-  }, [dispatch, count]);
-  React.useEffect(() => {
-    dispatch(setCurrentPage({page: 0, limit}))
-    setPortionNumber(1)
-  }, [dispatch, selectedType])
-
-  
-  React.useEffect(() => {
-    if(search){
-      setIsFounded(true)
-      dispatch(fetchPokemonByName({ search }))
-    }
-  }, [dispatch, search])
+  }, [limit])
   
   return (
     <>
-      <PokemonTypes 
-        setSelectedType={setSelectedType} 
-        selectedType={selectedType}
-        handleSeeAll={handleSeeAll}
-      />
+      <PokemonTypes handleSeeAll={handleSeeAll}/>
       <PokemonsBlock fetchDataFunc={fetchDataFunc} />
       {status === StatusEnum.SUCCESS 
         && pokemonsInfoList.length !== 0
-        && !isFounded
         && <Pagination 
               portionSize={portionSize}
               handleChangePage={handleChangePage}
@@ -117,18 +99,6 @@ export const HomePage: React.FC = () => {
               handleLimitChange={handleLimitChange}
             />
       }
-      {isFounded && 
-        <div className="container">
-          <div className="pagination__settings">
-            <div 
-              className="pagination__settings-inner seeAll" 
-              onClick={handleSeeAll}
-            > 
-              <div className="pagination__settings-text">See all pokemons</div>
-            </div>
-          </div> 
-        </div> 
-        }
     </>
   );
 };

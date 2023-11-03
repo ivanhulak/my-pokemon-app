@@ -1,4 +1,4 @@
-import { POKEMON_API_POKEMON_TYPE, POKEMON_API_POKEMON_URL } from "../constants";
+import { POKEMON_API_POKEMON_TYPE } from "../constants";
 
 export type AllTypesType = {
   name: string;

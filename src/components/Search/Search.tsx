@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React from "react";
-import { setSearch } from "../../store/slices/filters";
-import { useAppDispatch } from "../../store/store";
+import { clearSelectedTypes, setSearch } from "../../store/slices/filters";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import pokeball_icon from "../../assets/icons/pokeball.png";
 import searchIcon from '../../assets/svg/search.svg';
 import closeIcon from '../../assets/svg/close.svg';
@@ -10,6 +10,7 @@ export const Search: React.FC = () => {
   const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = React.useState("");
   const [isActive, setIsActive] = React.useState(false);
+  const selectedTypes = useAppSelector(state => state.filters.selectedTypes)
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +21,11 @@ export const Search: React.FC = () => {
   }
 
   const onHandleSearch = () => {
+    if(selectedTypes !== null){
+      if(window.confirm('Choosen types need to be reseted to make new search!\nDo you agree reset all types?')){
+        dispatch(clearSelectedTypes())
+      }
+    }
     inputRef.current?.blur()
     dispatch(setSearch(searchValue));
     setSearchValue('');
@@ -57,7 +63,11 @@ export const Search: React.FC = () => {
           }
         </div>
       </div>
-      <button className="header__search-btn" onClick={onHandleSearch} disabled={isActive || !searchValue}>
+      <button 
+        className="header__search-btn" 
+        onClick={onHandleSearch} 
+        disabled={isActive || !searchValue}
+      >
         <div className={cn("btn-pokeball", {'active': isActive})}>
           <img src={pokeball_icon} alt="pokeball" />
         </div>

@@ -1,6 +1,9 @@
 .types{
    @include adaptiveValue('padding-top', 10, 0);
-   @include adaptiveValue('padding-bottom', 30, 10);
+   @include adaptiveValue('padding-bottom', 20, 10);
+   &__body{
+      position: relative;
+   }
    &__row{
       display: flex;
       justify-content: center;
@@ -13,6 +16,7 @@
       color: var(--white);
       @include adaptiveValue('font-size', 18, 14);
       border-radius: 12px;
+      border: 2px solid transparent;
       text-align: center;
       cursor: pointer;
       transition: all 0.5s ease;
@@ -21,11 +25,63 @@
          transition: all 0.4s ease;
       }
       &.active{
-         transform: scale(1.09);
+         transform: translate3D(0, -1px, 0) scale(1.07);
+         border: 2px solid var(--black);
          box-shadow: 1px 3px 3px 0px var(--grey);
       }
       &.all{
          background: #072AC8;
+         &.disabled{
+            pointer-events: none;
+            opacity: 0.6;
+         }
+      }
+      &.disabled{
+         pointer-events: none;
+         opacity: 0.6;
+      }
+      &.choosen{
+         color: var(--black);
+         border: 2px solid var(--black);
+         display: inline-block;
+      }
+   }
+   &__choice{
+      position: absolute;
+      left: 0;
+      top: -100%;
+      z-index: 10;
+      overflow: hidden;
+      opacity: 0;
+      max-height: 0px;
+      width: 100%;
+      padding: 20px;
+      transition: all 0.5s ease;
+      pointer-events: none;
+      &.opened{
+         pointer-events: all;
+         top: 110%;
+         overflow: visible;
+         opacity: 1;
+         max-height: 175px;
+         z-index: 10;
+         background: var(--light-grey);
+         border-radius: 16px;
+      }
+      &-text{
+         display: inline-block;
+         font-size: 20px;
+         background: var(--main-blue);
+         border-radius: 16px;
+         padding: 10px 20px;
+         color: var(--white);
+         font-weight: 500;
+      }
+      &-list{
+         display: flex;
+         align-items: center;
+         flex-wrap: wrap;
+         gap: 10px;
       }
    }
 }

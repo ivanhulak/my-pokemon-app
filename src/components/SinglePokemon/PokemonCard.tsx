@@ -19,7 +19,6 @@ export const PokemonCard: React.FC<PokemonInfoType> = ({
   image,
   image_reserve,
 }) => {
-  console.log(types);
 
   return (
     <div className="singlePokemon__block block-single">
