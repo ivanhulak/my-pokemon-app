@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AllTypesType } from '../../utils/allTypes';
+import { getDataFromLC } from '../../utils/functions/getDataFromLC';
+import { RootState } from '../store';
 
 type SelectedTypesType = {
   items?: AllTypesType[];
@@ -11,12 +13,7 @@ interface FiltersSlice {
    search: string | null;
    selectedTypes: SelectedTypesType | null;
 }
-export const getDataFromLC = () => {
-  const data = localStorage.getItem('data')
-  const objData = data ? JSON.parse(data) : null
-  const limit = objData?.limit ? objData.limit : 10
-  return { limit }
-}
+
 const { limit } = getDataFromLC()
 const initialState: FiltersSlice = { 
    offsetPage: 0,
@@ -69,4 +66,8 @@ export const {
   setSelectedTypes, 
   clearSelectedTypes 
 } = filtersSlice.actions
+
+// Selectors
+export const selectFiltersData = (state: RootState) => state.filters
+
 export default filtersSlice.reducer

@@ -1,5 +1,5 @@
 import { AllTypesType } from "../../utils/allTypes";
-import { PokemonInfoType, PokemonStatItem, PokemonType, PokemonTypesType } from "./common";
+import { PokemonStatItem, PokemonType, PokemonTypesType } from "./common";
 
 export type FetchPokemonsType = {
   count: number;
@@ -8,6 +8,19 @@ export type FetchPokemonsType = {
   prev: string | null;
 };
 
+export type FetchPokemonInfo = {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  image: string;
+  image_reserve: string;
+  url: string;
+  types: PokemonTypesType[];
+  stats: PokemonStatItem[];
+}
+
+// Params Types
 export type FetchPokemonsParamsType = {
   offset: number;
   limit: number;
@@ -25,14 +38,15 @@ export type FetchPokemonsByTypeParamsType = {
   limit: number;
 }
 
-export type FetchPokemonInfo = {
-  id: number;
-  name: string;
-  height: number;
-  weight: number;
-  image: string;
-  image_reserve: string;
-  url: string;
-  types: PokemonTypesType[];
-  stats: PokemonStatItem[];
+export type FetchByNameParamsType = {
+  search: string;
+  totalCount: number;
+  offset: number;
+  limit: number 
+}
+
+export type FetchByTypeParamsType = {
+  types: AllTypesType[] | undefined;
+  offset: number;
+  limit: number;
 }

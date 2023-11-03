@@ -55,8 +55,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    @include adaptiveValue('width', 100, 70);
-    height: 40px;
+    @include adaptiveValue('width', 100, 60);
+    @include adaptiveValue('height', 40, 30);
     border-radius: 24px;
     color: var(--white);
     @include adaptiveValue('font-size', 22, 16);

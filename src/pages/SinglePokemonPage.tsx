@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { PokemonBreeding } from "../components/SinglePokemon/PokemonBreeding";
 import { PokemonCard } from "../components/SinglePokemon/PokemonCard";
 import { PokemonMoves } from "../components/SinglePokemon/PokemonMoves";
-import { fetchSinglePokemon } from "../store/slices/pokemons";
+import { fetchSinglePokemon } from "../store/reducers/fetchSinglePokemon";
 import { useAppDispatch, useAppSelector } from "../store/store";
 
 export const SinglePokemonPage: React.FC = () => {
@@ -23,10 +23,7 @@ export const SinglePokemonPage: React.FC = () => {
       <div className="container">
         <div className="singlePokemon__body">
           <PokemonCard {...singlePokemon} />
-          <PokemonBreeding
-            weight={singlePokemon.weight}
-            height={singlePokemon.height}
-          />
+          <PokemonBreeding weight={singlePokemon.weight} height={singlePokemon.height}/>
           <PokemonMoves />
         </div>
       </div>

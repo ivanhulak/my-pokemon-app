@@ -4,7 +4,9 @@ import { allTypes, AllTypesType } from "../utils/allTypes";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { clearSelectedTypes, setSearch, setSelectedTypes } from "../store/slices/filters";
 import pokeball_icon from "../assets/icons/pokeball.png";
-import { fetchPokemonsByType } from "../store/slices/pokemons";
+import { fetchPokemonsByType } from "../store/reducers/fetchPokemonsByType";
+import close_icon from '../assets/svg/close-blue.svg';
+import close_icon_black from '../assets/svg/close-black.svg';
 
 type PokemonTypesProps = {
    handleSeeAll: () => void;
@@ -81,7 +83,9 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = (
                   key={t.name}
                   className="types__type choosen"
                   onClick={() => onHandleSelectType(t)}
-                >{t.name}</li>
+                >{t.name}
+                  <img className="types__type-closeIcon" src={close_icon_black} alt="close" />
+                </li> 
               ))}
               <button 
                 className={cn('types__search-btn', {'hidden': !selectedTypes?.items?.length})}
@@ -94,6 +98,10 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = (
                 <span>Go</span>
               </button>
             </ul>
+            <img
+              onClick={() => setIsOpened(false)}
+              className="types__choice-closeIcon" 
+              src={close_icon} alt="close" />
           </div>
         </div>
       </div>

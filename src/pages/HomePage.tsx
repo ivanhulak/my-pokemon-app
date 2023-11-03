@@ -1,25 +1,24 @@
 import React from "react";
 import { StatusEnum } from "../@types/enums/StatusEnum";
-import { FetchPokemonsParamsType } from "../@types/pokemons/fetchTypes";
+import { FetchByTypeParamsType, FetchPokemonsParamsType } from "../@types/pokemons/fetchTypes";
 import { Pagination } from "../components/Pagination";
 import { PokemonsBlock } from "../components/Pokemons/PokemonsBlock";
 import { PokemonTypes } from "../components/PokemonTypes";
-import { clearSelectedTypes, setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
+import { fetchPokemonByName } from "../store/reducers/fetchPokemonByName";
+import { fetchPokemons } from "../store/reducers/fetchPokemons";
+import { fetchPokemonsByType } from "../store/reducers/fetchPokemonsByType";
+import { clearSelectedTypes, selectFiltersData, setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
 import {
-  fetchPokemons,
   setRecountAll,
   selectPokemonsData,
-  fetchPokemonByName,
-  fetchPokemonsByType,
 } from "../store/slices/pokemons";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { AllTypesType } from "../utils/allTypes";
 
 export const HomePage: React.FC = () => {
   const [portionNumber, setPortionNumber] = React.useState(1);
   const isMounted = React.useRef(false)
   const dispatch = useAppDispatch();
-  const { offsetPage, limit, search, selectedTypes } = useAppSelector((state) => state.filters);
+  const { offsetPage, limit, search, selectedTypes } = useAppSelector(selectFiltersData);
   const { count, status, pages, portionSize, portionsCount, pokemonsInfoList, totalCount } =
     useAppSelector(selectPokemonsData);
 
@@ -53,7 +52,7 @@ export const HomePage: React.FC = () => {
       dispatch(fetchPokemonByName({ search, totalCount, offset: offsetPage, limit }))
     } 
     if(selectedTypes){
-      const params: {types: AllTypesType[] | undefined, limit: number, offset: number } = {
+      const params: FetchByTypeParamsType = {
         types: selectedTypes?.items,
         offset: offsetPage,
         limit,
@@ -62,7 +61,7 @@ export const HomePage: React.FC = () => {
     } if(search === null && selectedTypes === null){
       fetchDataFunc()
     }
-      
+    setPortionNumber(1)
   }, [dispatch, offsetPage, limit, search, totalCount]);
   React.useEffect(() => {
     dispatch(setRecountAll(limit));

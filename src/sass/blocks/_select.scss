@@ -1,8 +1,8 @@
 .select{
    &__container{
       position: relative;
-      @include adaptiveValue('width', 50, 40);
-      @include adaptiveValue('min-height', 50, 40);
+      @include adaptiveValue('width', 50, 30);
+      @include adaptiveValue('min-height', 50, 30);
       border-radius: 50%;
       border: 2px solid #fff;
       display: flex;
@@ -12,6 +12,9 @@
       outline: none;
       &:focus {
          border-color: var(--blue-stroke);
+      }
+      @media (max-width: 475px){
+         border-width: 1px;
       }
    }
    &__value{
