@@ -56,7 +56,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 <li
                   key={p}
                   onClick={() => handleChangePage(p - 1)}
-                  className={cn({ active: (p - 1) * limit === offsetPage })}
+                  className={cn({ 'active': (p - 1) * limit === (Math.ceil(offsetPage / limit)) * limit })}
                 >
                   {p}
                 </li>

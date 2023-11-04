@@ -32,9 +32,9 @@ const filtersSlice = createSlice({
     setSearch(state, action: PayloadAction<string | null>){
       state.search = action.payload
     },
-    setLimit(state, action: PayloadAction<number>){
-      state.limit = action.payload
-      state.offsetPage = 0
+    setLimit(state, action: PayloadAction<{value: number, offsetPage: number}>){
+      state.limit = action.payload.value
+      state.offsetPage = action.payload.offsetPage
     },
     setSelectedTypes(state, action: PayloadAction<AllTypesType>){
       const isAlreadySelected = (obj: AllTypesType) => {

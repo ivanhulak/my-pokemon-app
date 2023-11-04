@@ -9,10 +9,6 @@ type SelectProps = {
 }
 export const Select: React.FC<SelectProps> = ({onOptionChange, currentOption}) => {
    const [isOpen, setIsOpen] = React.useState(false)
-   
-   const handleOptionChange = (option: number) => {
-      onOptionChange(option)
-   }
 
    return (
       <div 
@@ -27,7 +23,7 @@ export const Select: React.FC<SelectProps> = ({onOptionChange, currentOption}) =
                <li
                   key={option}
                   className={cn('select__option', { 'selected': currentOption === option })}
-                  onClick={() => handleOptionChange(option)}
+                  onClick={() => onOptionChange(option)}
                >
                   {option}
                </li>

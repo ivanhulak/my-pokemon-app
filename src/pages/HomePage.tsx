@@ -28,11 +28,16 @@ export const HomePage: React.FC = () => {
     window.scroll({ top: 0, behavior: "smooth" });
   };
   const handleLimitChange = (value: number) => {
-    dispatch(setLimit(value))
+    dispatch(setLimit({value, offsetPage}))
   };
   const handleSeeAll = () => {
     fetchDataFunc()
     dispatch(setSearch(null))
+  }
+  const handlePortionNumber = (offset: number, limit: number, portionSize: number) => {
+    const page = Math.ceil(offset / limit) + 1
+    const currentPortion = Math.ceil(page / portionSize)
+    setPortionNumber(currentPortion)
   }
 
   // ---- Functions that loaded data ----
@@ -50,6 +55,7 @@ export const HomePage: React.FC = () => {
     if(search){
       dispatch(setCurrentPage({page: 0, limit}))
       dispatch(fetchPokemonByName({ search, totalCount, offset: offsetPage, limit }))
+      if(pokemonsInfoList.length < limit) setPortionNumber(1)
     } 
     if(selectedTypes){
       const params: FetchByTypeParamsType = {
@@ -61,7 +67,6 @@ export const HomePage: React.FC = () => {
     } if(search === null && selectedTypes === null){
       fetchDataFunc()
     }
-    setPortionNumber(1)
   }, [dispatch, offsetPage, limit, search, totalCount]);
   React.useEffect(() => {
     dispatch(setRecountAll(limit));
@@ -76,8 +81,8 @@ export const HomePage: React.FC = () => {
       localStorage.setItem('data', json)
     }
     isMounted.current = true
-    dispatch(setRecountAll(limit))
     setPortionNumber(1)
+    handlePortionNumber(offsetPage, limit, portionSize)
   }, [limit])
   
   return (
