@@ -3,8 +3,6 @@ import cn from "classnames";
 import pag_btn from "../assets/svg/pag-btn.svg";
 import { Select } from "./Select";
 
-const selectOptions: string[] = ["10", "20", "50"];
-
 type PaginationProps = {
   portionSize: number;
   handleChangePage: (page: number) => void;

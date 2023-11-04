@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StatusEnum } from "../../@types/enums/StatusEnum";
-import { PokemonInfoType } from "../../@types/pokemons/common";
-import { recountAll, recountFn } from "../../utils/functions/recountFn";
+import { PokemonInfoType } from "../../@types/pokemons-types";
+import { recountFn } from "../../utils/functions/recountFn";
 import { RootState } from "../store";
 import { fetchSinglePokemon } from "../reducers/fetchSinglePokemon";
 import { fetchPokemons } from "../reducers/fetchPokemons";
@@ -18,7 +18,6 @@ export interface PokemonsSlice {
   portionSize: number;
   portionsCount: number;
   singlePokemon: PokemonInfoType;
-  isMobile: null | boolean;
 }
 const initialState: PokemonsSlice = {
   count: 0,
@@ -30,7 +29,6 @@ const initialState: PokemonsSlice = {
   pokemonsInfoList: [],
   errorMessage: undefined,
   singlePokemon: {} as PokemonInfoType,
-  isMobile: null
 };
 
 const pokemonsSlice = createSlice({
@@ -40,12 +38,8 @@ const pokemonsSlice = createSlice({
     setRecountAll: (state, action: PayloadAction<number>) => {
       recountFn(state, state.count, action.payload, '1')
     },
-    setDeviceType(state, action: PayloadAction<boolean>){
-      state.isMobile = action.payload
-      state.portionSize = 10
-      if(action.payload){
-        state.portionSize = 5
-      }
+    setDeviceType(state, action: PayloadAction<string>){
+      action.payload === 'mobile' ? state.portionSize = 5 : state.portionSize = 10
     }
   },
   extraReducers: (builder) => {
@@ -107,7 +101,7 @@ const pokemonsSlice = createSlice({
 });
 
 // Selectors
-export const selectPokemonsData = (state: RootState) => state.pokemons
+export const selectPokemons = (state: RootState) => state.pokemons
 
 export const { setRecountAll, setDeviceType } = pokemonsSlice.actions;
 export default pokemonsSlice.reducer;

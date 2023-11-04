@@ -1,12 +1,13 @@
 import cn from "classnames";
 import React from "react";
-import { clearSelectedTypes, setSearch } from "../../store/slices/filters";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import pokeball_icon from "../../assets/icons/pokeball.png";
-import searchIcon from '../../assets/svg/search.svg';
-import closeIcon from '../../assets/svg/close.svg';
+import { clearSelectedTypes, setSearch } from "../store/slices/filters";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import pokeball_icon from "../assets/img/pokeball.png";
+import searchIcon from '../assets/svg/search.svg';
+import closeIcon from '../assets/svg/close.svg';
 
 export const Search: React.FC = () => {
+
   const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = React.useState("");
   const [isActive, setIsActive] = React.useState(false);
@@ -34,6 +35,7 @@ export const Search: React.FC = () => {
       setIsActive(false)
     }, 2000);
   };
+  
   const handleSearchClear = () => {
     setSearchValue('');
     inputRef.current?.focus()

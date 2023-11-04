@@ -1,26 +1,24 @@
 import React from "react";
 import { StatusEnum } from "../@types/enums/StatusEnum";
-import { FetchByTypeParamsType, FetchPokemonsParamsType } from "../@types/pokemons/fetchTypes";
+import { FetchByTypeParamsType, FetchPokemonsParamsType } from "../@types/params-types";
 import { Pagination } from "../components/Pagination";
-import { PokemonsBlock } from "../components/Pokemons/PokemonsBlock";
+import { PokemonsBlock } from "../components/PokemonsBlock";
 import { PokemonTypes } from "../components/PokemonTypes";
 import { fetchPokemonByName } from "../store/reducers/fetchPokemonByName";
 import { fetchPokemons } from "../store/reducers/fetchPokemons";
 import { fetchPokemonsByType } from "../store/reducers/fetchPokemonsByType";
-import { clearSelectedTypes, selectFiltersData, setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
-import {
-  setRecountAll,
-  selectPokemonsData,
-} from "../store/slices/pokemons";
+import { clearSelectedTypes, selectFilters, setCurrentPage, setLimit, setSearch } from "../store/slices/filters";
+import { setRecountAll, selectPokemons } from "../store/slices/pokemons";
 import { useAppDispatch, useAppSelector } from "../store/store";
 
 export const HomePage: React.FC = () => {
+
   const [portionNumber, setPortionNumber] = React.useState(1);
   const isMounted = React.useRef(false)
   const dispatch = useAppDispatch();
-  const { offsetPage, limit, search, selectedTypes } = useAppSelector(selectFiltersData);
+  const { offsetPage, limit, search, selectedTypes } = useAppSelector(selectFilters);
   const { count, status, pages, portionSize, portionsCount, pokemonsInfoList, totalCount } =
-    useAppSelector(selectPokemonsData);
+    useAppSelector(selectPokemons);
 
   // ----- Handlers -----
   const handleChangePage = (page: number) => {
@@ -40,17 +38,15 @@ export const HomePage: React.FC = () => {
     setPortionNumber(currentPortion)
   }
 
-  // ---- Functions that loaded data ----
-  const fetchDataFunc = () => {
+  const fetchDataFunc = React.useCallback(() => {
     const params: FetchPokemonsParamsType = {
       offset: offsetPage,
       limit,
     };
     dispatch(fetchPokemons(params));
     dispatch(clearSelectedTypes())
-  };
+  }, [])
 
-  // ---- Syncronises (UseEffects) -----
   React.useEffect(() => {
     if(search){
       dispatch(setCurrentPage({page: 0, limit}))
@@ -68,10 +64,11 @@ export const HomePage: React.FC = () => {
       fetchDataFunc()
     }
   }, [dispatch, offsetPage, limit, search, totalCount]);
+
   React.useEffect(() => {
     dispatch(setRecountAll(limit));
   }, [dispatch, count, limit]);
-  // set data to localStorage on second render
+
   React.useEffect(() => {
     if (isMounted.current){
       const obj = {

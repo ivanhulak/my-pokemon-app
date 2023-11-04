@@ -1,4 +1,4 @@
-import { PokemonObjectType, PokemonType } from "../../@types/pokemons/common";
+import { PokemonObjectType, PokemonType } from "../../@types/pokemons-types";
 import { AllTypesType } from "../allTypes";
 
 export const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {

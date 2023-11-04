@@ -1,10 +1,10 @@
 import React from "react";
-import { StatusEnum } from "../../@types/enums/StatusEnum";
-import { PokemonInfoType } from "../../@types/pokemons/common";
-import { Error } from "../../pages/Error";
-import { selectPokemonsData } from "../../store/slices/pokemons";
-import { useAppSelector } from "../../store/store";
-import { NoPokemonsFound } from "../NoPokemonsFound";
+import { StatusEnum } from "../@types/enums/StatusEnum";
+import { PokemonInfoType } from "../@types/pokemons-types";
+import { ErrorPage } from "../pages/ErrorPage";
+import { selectPokemons } from "../store/slices/pokemons";
+import { useAppSelector } from "../store/store";
+import { NoPokemonsFound } from "./NoPokemonsFound";
 import { LoadingPokemon } from "./LoadingPokemon";
 import { Pokemon } from "./Pokemon";
 
@@ -15,9 +15,11 @@ type PokemonsBlockProps = {
 }
 
 export const PokemonsBlock: React.FC<PokemonsBlockProps> = ({ fetchDataFunc }) => {
-  const { status, pokemonsInfoList, errorMessage } = useAppSelector(selectPokemonsData);
 
-  const skeleton = Array(SKELETONS_COUNT).fill(null).map((_, idx) => <LoadingPokemon key={idx} />);
+  const { status, pokemonsInfoList, errorMessage } = useAppSelector(selectPokemons);
+
+  const skeleton = Array(SKELETONS_COUNT).fill(null)
+    .map((_, idx) => <LoadingPokemon key={idx} />);
   const pokemonItems = pokemonsInfoList.map((pkmn: PokemonInfoType) => (
     <Pokemon key={pkmn.url} {...pkmn} />
   ));
@@ -25,7 +27,7 @@ export const PokemonsBlock: React.FC<PokemonsBlockProps> = ({ fetchDataFunc }) =
   return (
     <div className="pokemons">
       {status === StatusEnum.ERROR ? (
-        <Error error={errorMessage} callback={fetchDataFunc} />
+        <ErrorPage error={errorMessage} callback={fetchDataFunc} />
       ) : (
         <div className="container">
           {status === StatusEnum.SUCCESS 

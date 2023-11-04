@@ -68,6 +68,6 @@ export const {
 } = filtersSlice.actions
 
 // Selectors
-export const selectFiltersData = (state: RootState) => state.filters
+export const selectFilters = (state: RootState) => state.filters
 
 export default filtersSlice.reducer

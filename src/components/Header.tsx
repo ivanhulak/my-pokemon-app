@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search } from "../Search/Search";
-import back_arrow from '../../assets/svg/back-arrow.svg';
+import { Search } from "./Search";
+import back_arrow from '../assets/svg/back-arrow.svg';
 
 export const Header: React.FC = () => {
   const location = useLocation();

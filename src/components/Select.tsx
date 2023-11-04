@@ -7,6 +7,7 @@ type SelectProps = {
    currentOption: number;
    onOptionChange: (option: number) => void;
 }
+
 export const Select: React.FC<SelectProps> = ({onOptionChange, currentOption}) => {
    const [isOpen, setIsOpen] = React.useState(false)
 

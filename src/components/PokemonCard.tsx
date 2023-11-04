@@ -1,15 +1,11 @@
 import React from "react";
-import {
-  PokemonInfoType,
-  PokemonStatItem,
-  PokemonTypesType,
-} from "../../@types/pokemons/common";
-import no_pokemon from "../../assets/img/no-pokemon.png";
-import { findColor } from "../../utils/functions/findColor";
-import { allStats } from "../../utils/allStats";
-import { allTypes } from "../../utils/allTypes";
-import { PokeballLoader } from "../PokeballLoader";
-import { PokemonID } from "../PokemonID";
+import { PokemonInfoType, PokemonStatItem, PokemonTypesType } from "../@types/pokemons-types";
+import no_pokemon from "../assets/img/no-pokemon.png";
+import { findColor } from "../utils/functions/findColor";
+import { allStats } from "../utils/allStats";
+import { allTypes } from "../utils/allTypes";
+import { PokeballLoader } from "./PokeballLoader";
+import { PokemonID } from "./PokemonID";
 
 export const PokemonCard: React.FC<PokemonInfoType> = ({
   id,

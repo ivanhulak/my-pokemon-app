@@ -1,11 +1,13 @@
 import React from "react";
 import pickachu from "../assets/img/not-found-pikachu.png";
-import { CommonBtn } from "./common/CommonBtn";
+import { CommonBtn } from "./CommonBtn";
 
 export const NoPokemonsFound: React.FC<{callback: () => void}> = ({callback}) => {
+  
   const onClickSearchOther = () => {
     callback()
   }
+
   return (
     <div className="noPokemons">
       <div className="container">

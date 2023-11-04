@@ -5,7 +5,7 @@
     @include adaptiveValue('padding-top', 50, 30);
     @include adaptiveValue('padding-bottom', 50, 20);
     box-shadow: 0 0 200px 10px #072ac8 inset;
-    background: url("../../assets/img/pokeball.png") right -50px / contain no-repeat;
+    background: url("../../assets/img/pokeball-bg.png") right -50px / contain no-repeat;
     @media (max-width: 768px){
       background-position: right center;
       background-size: 70%;

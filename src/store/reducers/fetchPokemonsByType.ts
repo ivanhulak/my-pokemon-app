@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AnotherPokemonType, PokemonInfoType } from "../../@types/pokemons/common";
-import { FetchByTypeParamsType } from "../../@types/pokemons/fetchTypes";
+import { FetchByTypeParamsType } from "../../@types/params-types";
+import { AnotherPokemonType, PokemonInfoType } from "../../@types/pokemons-types";
 import { AllTypesType } from "../../utils/allTypes";
 import { fetchPokemonsInfoFunc } from "../../utils/functions/fetchPokemonsInfoFunc";
 import { fetchPokemonsTypeFunc } from "../../utils/functions/fetchPokemonsTypeFunc";

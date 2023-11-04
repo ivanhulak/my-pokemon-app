@@ -9,9 +9,8 @@ type CommonBtnProps = {
 export const CommonBtn: React.FC<PropsWithChildren<CommonBtnProps>> = (
    {onClick, children, className}
 ) => {
+
   return (
-   <button className={className} onClick={onClick}>
-      {children}
-   </button>
+   <button className={className} onClick={onClick}>{children}</button>
   )
 }
