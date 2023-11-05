@@ -10,19 +10,15 @@ import { Pokemon } from "./Pokemon";
 
 const SKELETONS_COUNT = 10
 
-type PokemonsBlockProps = {
-  fetchDataFunc: () => void;
-}
-
-export const PokemonsBlock: React.FC<PokemonsBlockProps> = ({ fetchDataFunc }) => {
+export const PokemonsBlock: React.FC<{ fetchDataFunc: () => void }> = ({ fetchDataFunc }) => {
 
   const { status, pokemonsInfoList, errorMessage } = useAppSelector(selectPokemons);
 
   const skeleton = Array(SKELETONS_COUNT).fill(null)
-    .map((_, idx) => <LoadingPokemon key={idx} />);
-  const pokemonItems = pokemonsInfoList.map((pkmn: PokemonInfoType) => (
+    .map((_, idx) => <LoadingPokemon key={idx} />)
+  const pokemonItems = pokemonsInfoList.map((pkmn: PokemonInfoType) =>
     <Pokemon key={pkmn.url} {...pkmn} />
-  ));
+  )
 
   return (
     <div className="pokemons">
@@ -30,12 +26,12 @@ export const PokemonsBlock: React.FC<PokemonsBlockProps> = ({ fetchDataFunc }) =
         <ErrorPage error={errorMessage} callback={fetchDataFunc} />
       ) : (
         <div className="container">
-          {status === StatusEnum.SUCCESS 
-          && !pokemonItems.length 
-          && <NoPokemonsFound callback={fetchDataFunc}/>}
           <div className="pokemons__box box-pokemons">
             {status === StatusEnum.LOADING ? skeleton : pokemonItems}
           </div>
+          {status === StatusEnum.SUCCESS 
+          && !pokemonItems.length 
+          && <NoPokemonsFound callback={fetchDataFunc}/>}
         </div>
       )}
     </div>

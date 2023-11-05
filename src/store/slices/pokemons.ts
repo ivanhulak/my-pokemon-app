@@ -43,7 +43,6 @@ const pokemonsSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    // ------- fetchPokemons ------
     builder.addCase(fetchPokemons.pending, (state) => {
       state.status = StatusEnum.LOADING;
     });
@@ -91,7 +90,7 @@ const pokemonsSlice = createSlice({
     builder.addCase(fetchPokemonByName.fulfilled, (state, action) => {
       state.pokemonsInfoList = action.payload.info;
       recountFn(state, action.payload.count, action.payload.limit, '2')
-      state.status = StatusEnum.SUCCESS;
+      state.status = action.payload.info.length ? StatusEnum.SUCCESS : StatusEnum.LOADING;
     });
     builder.addCase(fetchPokemonByName.rejected, (state, action) => {
       state.errorMessage = action.error.message;
@@ -100,7 +99,6 @@ const pokemonsSlice = createSlice({
   },
 });
 
-// Selectors
 export const selectPokemons = (state: RootState) => state.pokemons
 
 export const { setRecountAll, setDeviceType } = pokemonsSlice.actions;

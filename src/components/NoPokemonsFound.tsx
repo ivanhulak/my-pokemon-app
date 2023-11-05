@@ -4,10 +4,8 @@ import { CommonBtn } from "./CommonBtn";
 
 export const NoPokemonsFound: React.FC<{callback: () => void}> = ({callback}) => {
   
-  const onClickSearchOther = () => {
-    callback()
-  }
-
+  const onClickSearchOther = () => callback()
+  
   return (
     <div className="noPokemons">
       <div className="container">

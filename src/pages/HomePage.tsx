@@ -17,10 +17,9 @@ export const HomePage: React.FC = () => {
   const isMounted = React.useRef(false)
   const dispatch = useAppDispatch();
   const { offsetPage, limit, search, selectedTypes } = useAppSelector(selectFilters);
-  const { count, status, pages, portionSize, portionsCount, pokemonsInfoList, totalCount } =
+  const { status, pages, portionSize, portionsCount, pokemonsInfoList, totalCount } =
     useAppSelector(selectPokemons);
 
-  // ----- Handlers -----
   const handleChangePage = (page: number) => {
     dispatch(setCurrentPage({ page, limit }));
     window.scroll({ top: 0, behavior: "smooth" });
@@ -30,7 +29,8 @@ export const HomePage: React.FC = () => {
   };
   const handleSeeAll = () => {
     fetchDataFunc()
-    dispatch(setSearch(null))
+    if(search) dispatch(setSearch(null))
+    dispatch(clearSelectedTypes())
   }
   const handlePortionNumber = (offset: number, limit: number, portionSize: number) => {
     const page = Math.ceil(offset / limit) + 1
@@ -44,14 +44,12 @@ export const HomePage: React.FC = () => {
       limit,
     };
     dispatch(fetchPokemons(params));
-    dispatch(clearSelectedTypes())
-  }, [])
+  }, [offsetPage, limit])
 
   React.useEffect(() => {
     if(search){
-      dispatch(setCurrentPage({page: 0, limit}))
       dispatch(fetchPokemonByName({ search, totalCount, offset: offsetPage, limit }))
-      if(pokemonsInfoList.length < limit) setPortionNumber(1)
+      if(pokemonsInfoList.length <= limit) setPortionNumber(1)
     } 
     if(selectedTypes){
       const params: FetchByTypeParamsType = {
@@ -60,31 +58,23 @@ export const HomePage: React.FC = () => {
         limit,
       };
       dispatch(fetchPokemonsByType(params))
-    } if(search === null && selectedTypes === null){
-      fetchDataFunc()
-    }
+    } 
+    if(search === null && selectedTypes === null) fetchDataFunc()
   }, [dispatch, offsetPage, limit, search, totalCount]);
 
   React.useEffect(() => {
-    dispatch(setRecountAll(limit));
-  }, [dispatch, count, limit]);
-
-  React.useEffect(() => {
     if (isMounted.current){
-      const obj = {
-        limit,
-      }
-      const json = JSON.stringify(obj)
+      const json = JSON.stringify({ limit })
       localStorage.setItem('data', json)
     }
     isMounted.current = true
-    setPortionNumber(1)
     handlePortionNumber(offsetPage, limit, portionSize)
-  }, [limit])
+    dispatch(setRecountAll(limit));
+  }, [dispatch, limit])
   
   return (
     <>
-      <PokemonTypes handleSeeAll={handleSeeAll}/>
+      <PokemonTypes handleSeeAll={handleSeeAll} setPortionNumber={setPortionNumber}/>
       <PokemonsBlock fetchDataFunc={fetchDataFunc} />
       {status === StatusEnum.SUCCESS 
         && pokemonsInfoList.length !== 0

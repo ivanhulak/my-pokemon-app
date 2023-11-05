@@ -1,19 +1,19 @@
 import { PokemonObjectType, PokemonType } from "../../@types/pokemons-types";
+import { POKEMON_API_POKEMON_URL, POKEMON_IMAGE_BASE_URL } from "../../constants";
 import { AllTypesType } from "../allTypes";
 
 export const addPokemonToList = (addedPokemon: PokemonType, selectedType: AllTypesType) => {
    const pokemonId = parseInt(
      addedPokemon.url
-       .replace("https://pokeapi.co/api/v2/pokemon/", "") // get "id/"
-       .replace("/", "") // get "id"
+       .replace(`${POKEMON_API_POKEMON_URL}/`, "")
+       .replace("/", "")
    );
-   const main_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`
-   const reserve_url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`
+
    const pokemonObj: PokemonObjectType = {
      name: addedPokemon.name,
      url: addedPokemon.url,
-     image: main_url,
-     image_reserve: reserve_url,
+     image: `${POKEMON_IMAGE_BASE_URL}/other/dream-world/${pokemonId}.svg`,
+     image_reserve: `${POKEMON_IMAGE_BASE_URL}/other/home/${pokemonId}.png`,
      id: pokemonId,
      types: [{ slot: 1, type: selectedType }],
    };

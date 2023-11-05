@@ -1,17 +1,19 @@
 import cn from "classnames";
 import React from "react";
-import { clearSelectedTypes, setSearch } from "../store/slices/filters";
+import { clearSelectedTypes, selectFilters, setCurrentPage, setSearch } from "../store/slices/filters";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import pokeball_icon from "../assets/img/pokeball.png";
 import searchIcon from '../assets/svg/search.svg';
 import closeIcon from '../assets/svg/close.svg';
+import { fetchPokemonByName } from "../store/reducers/fetchPokemonByName";
 
 export const Search: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = React.useState("");
   const [isActive, setIsActive] = React.useState(false);
-  const selectedTypes = useAppSelector(state => state.filters.selectedTypes)
+  const { selectedTypes, offsetPage, limit} = useAppSelector(selectFilters)
+  const totalCount = useAppSelector(state => state.pokemons.totalCount)
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +31,8 @@ export const Search: React.FC = () => {
     }
     inputRef.current?.blur()
     dispatch(setSearch(searchValue));
+    dispatch(setCurrentPage({page: 0, limit}))
+    dispatch(fetchPokemonByName({ search: searchValue, totalCount, offset: offsetPage, limit }))
     setSearchValue('');
     setIsActive(true)
     setTimeout(() => {

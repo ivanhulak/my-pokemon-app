@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { FetchByNameParamsType } from "../../@types/params-types";
-import { PokemonInfoType, PokemonType } from "../../@types/pokemons-types";
+import { FetchByNameParamsType, ReturnedObj } from "../../@types/params-types";
+import { PokemonType } from "../../@types/pokemons-types";
 import { POKEMON_API_POKEMON_URL } from "../../constants";
 import { fetchPokemonsInfoFunc } from "../../utils/functions/fetchPokemonsInfoFunc";
 
@@ -17,11 +17,12 @@ export const fetchPokemonByName = createAsyncThunk(
     const promises = result
       .slice(offset, offset + (limit - 1))
       .map((item: PokemonType) => fetchPokemonsInfoFunc(item.url));
+    const info = await Promise.all(promises)
     const obj = {
-      info: await Promise.all(promises),
+      info,
       count: result.length,
       limit,
     };
-    return obj as { info: PokemonInfoType[]; count: number; limit: number };
+    return obj as ReturnedObj;
   }
 );

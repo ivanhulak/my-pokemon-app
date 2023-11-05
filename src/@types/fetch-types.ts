@@ -1,4 +1,3 @@
-import { AllTypesType } from "../utils/allTypes";
 import { PokemonStatItem, PokemonType, PokemonTypesType } from "./pokemons-types";
 
 export type FetchPokemonsType = {

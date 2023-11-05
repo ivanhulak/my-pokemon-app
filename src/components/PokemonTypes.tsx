@@ -2,22 +2,19 @@ import React from "react";
 import cn from "classnames";
 import { allTypes, AllTypesType } from "../utils/allTypes";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import {
-  clearSelectedTypes,
-  selectFilters,
-  setSearch,
-  setSelectedTypes,
-} from "../store/slices/filters";
+import { selectFilters, setOffsetPage, setSearch, setSelectedTypes } from "../store/slices/filters";
 import { fetchPokemonsByType } from "../store/reducers/fetchPokemonsByType";
 import pokeball_icon from "../assets/img/pokeball.png";
 import close_icon from "../assets/svg/close-blue.svg";
-import close_icon_black from "../assets/svg/close-black.svg";
+import close_icon_white from "../assets/svg/close-white.svg";
+import { FetchByTypeParamsType } from "../@types/params-types";
 
 type PokemonTypesProps = {
   handleSeeAll: () => void;
-};
+  setPortionNumber: (portion: number) => void;
+}
 
-export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll }) => {
+export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll, setPortionNumber }) => {
   
   const dispatch = useAppDispatch();
   const [isActive, setIsActive] = React.useState(false);
@@ -31,15 +28,13 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll }) => {
 
   const onHandleSearch = () => {
     if (selectedTypes) {
-      const params: {
-        types: AllTypesType[] | undefined;
-        limit: number;
-        offset: number;
-      } = {
+      const params: FetchByTypeParamsType = {
         types: selectedTypes.items,
         offset: offsetPage,
         limit,
       };
+      dispatch(setOffsetPage())
+      setPortionNumber(1)
       dispatch(fetchPokemonsByType(params));
     }
     if (search !== null) {
@@ -51,10 +46,6 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll }) => {
       setIsActive(false);
     }, 2000);
   };
-
-  React.useEffect(() => {
-    if (!selectedTypes?.items?.length) dispatch(clearSelectedTypes());
-  }, [dispatch, selectedTypes]);
 
   return (
     <div className="types">
@@ -95,12 +86,13 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll }) => {
                 <li
                   key={t.name}
                   className="types__type choosen"
+                  style={{ background: t.color }}
                   onClick={() => onHandleSelectType(t)}
                 >
                   {t.name}
                   <img
                     className="types__type-closeIcon"
-                    src={close_icon_black}
+                    src={close_icon_white}
                     alt="close"
                   />
                 </li>

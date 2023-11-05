@@ -55,6 +55,9 @@ const filtersSlice = createSlice({
     },
     clearSelectedTypes(state){
       state.selectedTypes = null
+    },
+    setOffsetPage(state){
+      state.offsetPage = 0
     }
   },
 })
@@ -64,10 +67,10 @@ export const {
   setSearch, 
   setLimit, 
   setSelectedTypes, 
-  clearSelectedTypes 
+  clearSelectedTypes,
+  setOffsetPage 
 } = filtersSlice.actions
 
-// Selectors
 export const selectFilters = (state: RootState) => state.filters
 
 export default filtersSlice.reducer

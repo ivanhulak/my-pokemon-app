@@ -29,12 +29,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   const leftPortion = (portionNumber - 1) * portionSize + 1;
   const rightPortion = portionNumber * portionSize;
 
-  const handlePrev = () => {
-    setPortionNumber((prev: number) => prev - 1);
-  };
-  const handleNext = () => {
-    setPortionNumber((prev: number) => prev + 1);
-  };
+  const handlePrev = () => setPortionNumber((prev: number) => prev - 1);
+  const handleNext = () => setPortionNumber((prev: number) => prev + 1);
 
   return (
     <div className="pagination">
