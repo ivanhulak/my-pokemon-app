@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/my-pokemon-app/static/css/main.21fc3b2a.css",
-    "main.js": "/my-pokemon-app/static/js/main.eb50a854.js",
+    "main.css": "/my-pokemon-app/static/css/main.bab4680b.css",
+    "main.js": "/my-pokemon-app/static/js/main.8e78ea85.js",
     "static/media/pokeball-bg.png": "/my-pokemon-app/static/media/pokeball-bg.61809de4531b4351788b.png",
     "static/media/pokeball-loader.gif": "/my-pokemon-app/static/media/pokeball-loader.5b80b20c2dfd81a68eee.gif",
     "static/media/not-found-pikachu.png": "/my-pokemon-app/static/media/not-found-pikachu.a4bed87cc42f9d0bdc50.png",
     "static/media/no-pokemon.png": "/my-pokemon-app/static/media/no-pokemon.7fdbabe86b3641401a40.png",
     "static/media/close-blue.svg": "/my-pokemon-app/static/media/close-blue.435faf82d98fb9c0cd5d80305e1f6b3c.svg",
     "static/media/close.svg": "/my-pokemon-app/static/media/close.604737a01ee09bdf61e0573159ec0225.svg",
-    "static/media/close-black.svg": "/my-pokemon-app/static/media/close-black.0c9f7bde4ffe508a4a495fe86a309661.svg",
+    "static/media/close-white.svg": "/my-pokemon-app/static/media/close-white.63604452d2f67a07b9b6194bd2191bec.svg",
     "index.html": "/my-pokemon-app/index.html",
     "static/media/search.svg": "/my-pokemon-app/static/media/search.c63e2f50e6d8668d024af47871be2000.svg",
     "static/media/back-arrow.svg": "/my-pokemon-app/static/media/back-arrow.40a6aa83cf565d532503d5510a7e3239.svg",
     "static/media/pag-btn.svg": "/my-pokemon-app/static/media/pag-btn.77ce483524b14726b98e7db83990ba39.svg",
-    "main.21fc3b2a.css.map": "/my-pokemon-app/static/css/main.21fc3b2a.css.map",
-    "main.eb50a854.js.map": "/my-pokemon-app/static/js/main.eb50a854.js.map"
+    "main.bab4680b.css.map": "/my-pokemon-app/static/css/main.bab4680b.css.map",
+    "main.8e78ea85.js.map": "/my-pokemon-app/static/js/main.8e78ea85.js.map"
   },
   "entrypoints": [
-    "static/css/main.21fc3b2a.css",
-    "static/js/main.eb50a854.js"
+    "static/css/main.bab4680b.css",
+    "static/js/main.8e78ea85.js"
   ]
 }
