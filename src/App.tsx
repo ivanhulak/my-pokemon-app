@@ -1,14 +1,20 @@
 import React from "react";
+import { lazily } from 'react-lazily';
 import { Routes, Route } from "react-router-dom";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import "./sass/main.scss";
 import { useAppDispatch } from "./store/store";
 import { setDeviceType } from "./store/slices/pokemons";
-import { SinglePokemonPage } from "./pages/SinglePokemonPage";
-import { HomePage } from "./pages/HomePage";
-import { ErrorPage } from "./pages/ErrorPage";
 import { useScreenSize } from "./hooks/useScreenSize";
+import { PokeballLoader } from "./components/PokeballLoader";
+
+const { HomePage } = lazily(() => 
+  import(/* webpackChunkName: "HomePage" */ './pages/HomePage'));
+const { SinglePokemonPage } = lazily(() => 
+  import(/* webpackChunkName: "SinglePokemonPage" */ './pages/SinglePokemonPage'));
+const { ErrorPage } = lazily(() => 
+  import(/* webpackChunkName: "ErrorPage" */ './pages/ErrorPage'));
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,13 +30,23 @@ export const App: React.FC = () => {
       <Header />
       <div className="content">
         <Routes>
-          <Route path='/' element={<HomePage />}/>
-          <Route path='/home' element={<HomePage />}/>
-          <Route path='/pokemon/:id' element={<SinglePokemonPage />}/> 
+          <Route path='/' element={
+            <React.Suspense fallback={<PokeballLoader />}>
+              <HomePage />
+            </React.Suspense>
+          } />
+          <Route path='/pokemon/:id' element={
+            <React.Suspense fallback={<PokeballLoader />}>
+              <SinglePokemonPage />
+            </React.Suspense>
+          } />
           <Route path='*' element={
-            <ErrorPage 
-              callback={() => document.location.reload()} 
-              error={'Not found page'}/>}/>
+            <React.Suspense fallback={<PokeballLoader />}>
+              <ErrorPage 
+                callback={() => document.location.reload()} 
+                error={'Not found page'}/>
+            </React.Suspense>
+          } />
         </Routes>
       </div>
       <Footer />

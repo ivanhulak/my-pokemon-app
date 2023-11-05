@@ -44,7 +44,7 @@ export const HomePage: React.FC = () => {
       limit,
     };
     dispatch(fetchPokemons(params));
-  }, [offsetPage, limit])
+  }, [dispatch, offsetPage, limit])
 
   React.useEffect(() => {
     if(search){

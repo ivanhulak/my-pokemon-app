@@ -15,7 +15,7 @@ type PokemonTypesProps = {
 }
 
 export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll, setPortionNumber }) => {
-  
+
   const dispatch = useAppDispatch();
   const [isActive, setIsActive] = React.useState(false);
   const [isOpened, setIsOpened] = React.useState(false);
@@ -27,6 +27,7 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll, setPor
   };
 
   const onHandleSearch = () => {
+    if (search !== null) dispatch(setSearch(null));
     if (selectedTypes) {
       const params: FetchByTypeParamsType = {
         types: selectedTypes.items,
@@ -37,14 +38,10 @@ export const PokemonTypes: React.FC<PokemonTypesProps> = ({ handleSeeAll, setPor
       setPortionNumber(1)
       dispatch(fetchPokemonsByType(params));
     }
-    if (search !== null) {
-      dispatch(setSearch(null));
-    }
+    
     setIsOpened(false);
     setIsActive(true);
-    setTimeout(() => {
-      setIsActive(false);
-    }, 2000);
+    setTimeout(() => setIsActive(false), 2000);
   };
 
   return (

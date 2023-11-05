@@ -38,8 +38,7 @@ const filtersSlice = createSlice({
     },
     setSelectedTypes(state, action: PayloadAction<AllTypesType>){
       const isAlreadySelected = (obj: AllTypesType) => {
-        const elem = state.selectedTypes?.items?.find((item: AllTypesType) => item.name === obj.name)
-        return elem 
+        return state.selectedTypes?.items?.find((item: AllTypesType) => item.name === obj.name)
       }
       const currentItems = state.selectedTypes?.items?.length 
         ? isAlreadySelected(action.payload) 
